@@ -114,9 +114,8 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
       <span className="tf-step"><i className="tf-sn">3</i>Add tracking below</span>
     </>
   );
-  const dlBtn = (label) => sheetDone ? (
-    <button type="button" className="am-showall" onClick={downloadOrders}>⬇ Get the sheet again</button>
-  ) : (
+  /* the button never changes after the download — the steps tick, it stays put (Julia, Jul 28) */
+  const dlBtn = (label) => (
     <button type="button" className="tf-dl" onClick={downloadOrders}>
       <svg aria-hidden width="12" height="12" viewBox="0 0 16 16" fill="none">
         <path d="M8 2.5v7m0 0 3-3m-3 3-3-3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
@@ -153,7 +152,8 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
     const actBtnClass = purpleBtns
       ? `tf-pbtn${foundRow ? ' tf-pbtn--primary' : ''}`
       : 'tf-abtn';
-    const rowClass = `am-row tf-row${amber && !calm ? ' tf-needs' : ''}${live ? ' tf-live' : ''}${wrapped ? ' tf-done tf-wraprow' : ''}`;
+    /* live rows stay calm too — no warm wash (Julia, Jul 28) */
+    const rowClass = `am-row tf-row${amber && !calm ? ' tf-needs' : ''}${wrapped ? ' tf-done tf-wraprow' : ''}`;
 
     return (
       <div key={rowKey} className="am-item">

@@ -20,11 +20,15 @@ let persistedMode = 'product';
    stage = ramp dot + word (3A) · actions = calm (4C) · icons off.
    Undecided dims ship at their F defaults: edu footnote (B) · late quiet (7A) ·
    header grey #f8f9fa · ship band · amber buttons. Flip here if she re-opens one. */
-const F_OPTS = { edu: 'b', stage: 'dots', act: 'calm', late: 'quiet', head: 'grey', icons: 'off', ship: 'band', btn: 'amber' };
+const F_OPTS = { edu: 'b', stage: 'dots', act: 'calm', late: 'quiet', icons: 'off', btn: 'amber' };
+// the two dims Julia kept open (Jul 28): header tint + ship-flow placement
+let persistedToggles = { head: 'grey', ship: 'band' };
 
 export default function CampaignPulse() {
   const [idx, setIdx] = useState(persistedIdx);
   const [mode, setMode] = useState(persistedMode);
+  const [tg, setTg] = useState(persistedToggles);
+  const setToggle = (k, v) => setTg((o) => ({ ...o, [k]: v }));
   const [openCrew, setOpenCrew] = useState(() => new Set());
   const [stageFilter, setStageFilter] = useState(null);
   const rootRef = useRef(null);
@@ -46,6 +50,7 @@ export default function CampaignPulse() {
   };
 
   useEffect(() => { persistedIdx = idx; }, [idx]);
+  useEffect(() => { persistedToggles = tg; }, [tg]);
   useEffect(() => { persistedMode = mode; }, [mode]);
   useEffect(() => { setStageFilter(null); }, [idx, mode]);
 
@@ -125,6 +130,14 @@ export default function CampaignPulse() {
         <button type="button" className={mode === 'local' ? 'cp-scrub-day cp-scrub-day--active' : 'cp-scrub-day'} onClick={() => switchMode('local')}>
           Local
         </button>
+        <span className="cp-mode-sep" aria-hidden />
+        <span className="cp-scrub-tag">HEADER</span>
+        <button type="button" title="#f8f9fa header tint" className={tg.head === 'grey' ? 'cp-scrub-day cp-scrub-day--active' : 'cp-scrub-day'} onClick={() => setToggle('head', 'grey')}>Grey</button>
+        <button type="button" title="White header" className={tg.head === 'white' ? 'cp-scrub-day cp-scrub-day--active' : 'cp-scrub-day'} onClick={() => setToggle('head', 'white')}>White</button>
+        <span className="cp-mode-sep" aria-hidden />
+        <span className="cp-scrub-tag">SHIP</span>
+        <button type="button" title="Steps band under the header" className={tg.ship === 'band' ? 'cp-scrub-day cp-scrub-day--active' : 'cp-scrub-day'} onClick={() => setToggle('ship', 'band')}>Band</button>
+        <button type="button" title="Steps + download inside the header" className={tg.ship === 'head' ? 'cp-scrub-day cp-scrub-day--active' : 'cp-scrub-day'} onClick={() => setToggle('ship', 'head')}>Header</button>
       </div>
 
 
@@ -145,7 +158,7 @@ export default function CampaignPulse() {
                   onFilter={setStageFilter}
                   openCrew={openCrew}
                   toggleCrew={toggleCrew}
-                  opts={F_OPTS}
+                  opts={{ ...F_OPTS, ...tg }}
                 />
               </div>
 

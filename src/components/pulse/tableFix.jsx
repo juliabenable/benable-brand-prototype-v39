@@ -1,0 +1,430 @@
+import { useReducer, useState } from 'react';
+import { crewFor, PHOTOS, TIMELINES, CASTING_TIMELINE, STAGE_LABELS, SPOTS } from './pulseData.js';
+import { stageOf, stagesFor, AM_FILTER_LABEL, ActionModal } from './amine.jsx';
+import LiveStatus from './LiveStatus.jsx';
+
+/* F · Table fixes — the creators-table study's picks, worn together
+   (creators-table-study/, Jul 28) + Julia's Jul 28 review round:
+   1C header status light KEPT · 2A ⓘ chip REJECTED → edu variants B/C/D/E
+   (footnote / system row / Katie rail note / coach mark, F-options switcher) ·
+   stage = rail chips (3B) or ramp dot + word (3A) · actions = amber row
+   anatomy (4A) or grouped bands (4D) · thanks = a NORMAL button (postcard
+   rejected) · late campaign = quiet done rows (7A) or split sections (7B),
+   wrap roster (7C) on day 30. The A table (AmineTable) stays untouched. */
+
+const B = import.meta.env.BASE_URL;
+const ICO = {
+  group: `${B}labs/group.svg`,
+  check: `${B}labs/check-circle.svg`,
+  chevron: `${B}labs/chevron.svg`,
+};
+
+/* stage chip fills = the rail's exact ramp (AM2_RAIL fills, amine.jsx) */
+const CHIP_FILLS = [
+  { bg: '#b9dfcb', ink: '#06301f' },
+  { bg: '#8fceae', ink: '#06301f' },
+  { bg: '#5fb98c', ink: '#06301f' },
+  { bg: '#30aa70', ink: '#ffffff' },
+  { bg: '#17864f', ink: '#ffffff' },
+  { bg: '#1a6f4c', ink: '#ffffff' },
+  { bg: '#124a33', ink: '#ffffff' },
+];
+
+const needsAction = (c) => (c.mystery && c.found) || (!c.mystery && !!c.action);
+
+/* "thank-you sent 💌" moved into the stamp — strip it from the status line */
+const cleanStatus = (status) => ({
+  ...status,
+  phrases: status.phrases.map((p) => p.replace(/\s*·\s*thank-you sent 💌\s*$/, '')),
+});
+
+/* one-time demo dismissals survive captured-DOM remounts */
+let sysRowDismissed = false;
+let coachDismissed = false;
+
+/* the spots rule, one sentence — shared by every edu variant */
+const SPOTS_RULE = `First ${SPOTS} to reply take the spots — extras are saved for your next campaign.`;
+
+export default function FixedTable({ scene, rows, filter, onFilter, openCrew, toggleCrew, opts = {} }) {
+  const { edu = 'b', stage = 'chips', act = 'rows', late = 'quiet', head = 'grey', ship = 'band', btn = 'amber' } = opts;
+  const purpleBtns = btn === 'purple';
+  const [, bump] = useReducer((n) => n + 1, 0);
+  const crewAll = crewFor(scene.day, scene.mode);
+  const cohort = crewAll.length;
+  const filtered = filter != null;
+  const stages = stagesFor(scene.mode);
+  const [modal, setModal] = useState(null);
+  const [sheetDone, setSheetDone] = useState(false);
+
+  const inviting = crewAll.some((c) => !c.mystery && c.stage === 0 && !c.found);
+  const shipDay = crewAll.some((c) => c.ship);
+  const wrapped = scene.day === 30;
+  const isLive = (c) => !c.mystery && !wrapped && stageOf(c, scene.day) === 5;
+  /* thanks is a gift, not a task — it never counts into the amber light */
+  const isAmber = (c) => needsAction(c) && !isLive(c);
+  const liveAll = crewAll.filter(isLive);
+  const needs = crewAll.filter(isAmber).length;
+  const coaching = edu === 'e' && inviting && !coachDismissed;
+
+  /* §1 · the subtitle is the table's status light (1C — kept, Julia Jul 28) */
+  const sub = coaching ? (
+    <span className="am-card-sub" style={{ color: '#1c1c1c', fontWeight: 500 }}>
+      {cohort} invited · <b>0 of {SPOTS} spots</b> filled
+    </span>
+  ) : filtered ? (
+    <span className="am-card-sub">{rows.length} of {cohort} · {AM_FILTER_LABEL(filter, scene.mode)}</span>
+  ) : needs > 0 ? (
+    <span className="am-card-sub tf-sub--amber"><i className="tf-dot" style={{ background: '#f0a32e' }} />{needs} waiting on you</span>
+  ) : (
+    <span className="am-card-sub"><i className="tf-dot" style={{ background: '#2baf87' }} />
+      {wrapped ? 'Nothing left to do — campaign wrapped'
+        : liveAll.length ? `Nothing needs you — ${liveAll.length} live this week`
+        : inviting ? 'Nothing needs you — invites are out'
+        : 'Nothing needs you — everyone’s moving'}
+    </span>
+  );
+
+  const downloadOrders = () => {
+    const named = crewAll.filter((c) => !c.mystery);
+    const csv = [
+      'Creator,Handle,Product,Shipping status',
+      ...named.map((c) => [c.name, c.handle, c.product || '—', c.ship ? 'needs shipping' : 'shipped'].join(',')),
+    ].join('\n');
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+    const a = Object.assign(document.createElement('a'), { href: url, download: 'benable-orders.csv' });
+    a.click();
+    URL.revokeObjectURL(url);
+    setSheetDone(true);
+  };
+
+  /* the ship flow's pieces, shared by the band and the in-header placement */
+  const shipInHead = shipDay && ship === 'head';
+  const stepsSeq = sheetDone ? (
+    <>
+      <span className="tf-step tf-step--done"><i className="tf-sn">✓</i>Order sheet downloaded</span>
+      <span className="tf-arrow" aria-hidden>→</span>
+      <span className="tf-step tf-step--now"><i className="tf-sn">2</i>Ship, then add tracking per creator</span>
+    </>
+  ) : (
+    <>
+      <span className="tf-step tf-step--now"><i className="tf-sn">1</i>Download the order sheet</span>
+      <span className="tf-arrow" aria-hidden>→</span>
+      <span className="tf-step"><i className="tf-sn">2</i>Ship the packages</span>
+      <span className="tf-arrow" aria-hidden>→</span>
+      <span className="tf-step"><i className="tf-sn">3</i>Add tracking below</span>
+    </>
+  );
+  const dlBtn = (label) => sheetDone ? (
+    <button type="button" className="am-showall" onClick={downloadOrders}>⬇ Get the sheet again</button>
+  ) : (
+    <button type="button" className="tf-dl" onClick={downloadOrders}>
+      <svg aria-hidden width="12" height="12" viewBox="0 0 16 16" fill="none">
+        <path d="M8 2.5v7m0 0 3-3m-3 3-3-3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M3 13.5h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      </svg>
+      {label}
+    </button>
+  );
+
+  const liveNames = liveAll.map((c) => c.name);
+  const liveLabel = liveNames.length > 1
+    ? `${liveNames.slice(0, -1).join(', ')} and ${liveNames[liveNames.length - 1]}`
+    : liveNames[0];
+
+  /* ---- one row ---------------------------------------------------------- */
+  const renderRow = (c, i, { calm = false } = {}) => {
+    const rowKey = `${scene.day}-${c.name}-${i}`;
+    const open = openCrew.has(rowKey);
+    const timeline = c.mystery ? CASTING_TIMELINE : TIMELINES[c.name] || [];
+    const reached = c.mystery ? -1 : stageOf(c, scene.day);
+    const foundRow = c.mystery && c.found;
+    const live = isLive(c);
+    /* §4 · amber = the ball is in your court; in 4D group mode the band
+       carries the color and rows stay calm (gold text + pill only) */
+    const amber = isAmber(c);
+    const actModal = c.ship
+      ? { kind: 'ship', name: c.name }
+      : c.confirmEmail
+        ? { kind: 'visit', name: c.name }
+        : null;
+    /* honest buttons age better: the ship modal asks for tracking (amber mode);
+       the purple set mirrors Julia's mock verbatim, incl. "Mark shipped" */
+    const cta = foundRow ? 'Review matches' : c.ship ? (purpleBtns ? 'Mark shipped' : 'Add tracking') : c.confirmEmail ? 'Confirm visit' : c.action?.cta;
+    const actBtnClass = purpleBtns
+      ? `tf-pbtn${foundRow ? ' tf-pbtn--primary' : ''}`
+      : 'tf-abtn';
+    const rowClass = `am-row tf-row${amber && !calm ? ' tf-needs' : ''}${live ? ' tf-live' : ''}${wrapped ? ' tf-done tf-wraprow' : ''}`;
+
+    return (
+      <div key={rowKey} className="am-item">
+        <div
+          role="button"
+          tabIndex={foundRow ? undefined : 0}
+          className={rowClass}
+          onClick={foundRow ? undefined : () => toggleCrew(rowKey)}
+          onKeyDown={foundRow ? undefined : (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleCrew(rowKey); } }}
+          aria-expanded={foundRow ? undefined : open}
+        >
+          <span className="am-who">
+            {foundRow ? (
+              <span className="am-avatar am-avatar--blur"><img src={PHOTOS.Amara} alt="" /></span>
+            ) : !c.mystery && PHOTOS[c.name] ? (
+              <span className={wrapped ? 'tf-ring' : undefined}><span className="am-avatar"><img src={PHOTOS[c.name]} alt="" /></span></span>
+            ) : (
+              <span className="am-avatar am-avatar--mystery">?</span>
+            )}
+            <span className="am-names">
+              <span className="am-name">
+                {foundRow ? c.name : c.mystery ? 'Sourcing' : c.name}
+                {!c.mystery && <img src={ICO.check} alt="Verified" className="am-verified" />}
+              </span>
+              <span className="am-handle">{foundRow ? 'To fill your campaign' : c.mystery ? 'New creators for your campaign' : c.handle}</span>
+            </span>
+          </span>
+
+          {/* the update line says why; the flag glyph retired — the edge is the flag */}
+          <span className={`am-update${amber ? ' tf-uamber' : ''}`}>
+            <LiveStatus status={wrapped ? cleanStatus(c.status) : c.status} />
+          </span>
+
+          {/* §3/§4/§5 · the stage slot: chip or dot, amber pill, or thanks */}
+          {amber ? (
+            <span className="am-row-cta-slot">
+              <button
+                type="button"
+                className={`${actBtnClass}${shipDay && c.ship && !sheetDone ? ' tf-abtn--waiting' : ''}`}
+                onClick={(e) => { e.stopPropagation(); if (actModal) setModal(actModal); }}
+              >
+                {cta}
+              </button>
+            </span>
+          ) : live ? (
+            /* thanks reverted to a normal button (postcard retired, Julia Jul 28) */
+            <span className="am-row-cta-slot">
+              {purpleBtns ? (
+                <button type="button" className="tf-pbtn tf-pbtn--love" onClick={(e) => e.stopPropagation()}><i aria-hidden>♡</i> Say thanks</button>
+              ) : (
+                <button type="button" className="tf-abtn" onClick={(e) => e.stopPropagation()}>Say thanks</button>
+              )}
+            </span>
+          ) : (
+            <span className="tf-chipslot">
+              {c.mystery ? (
+                stage === 'dots'
+                  ? <span className="tf-gdot"><i style={{ background: '#d5d8d5' }} />Sourcing…</span>
+                  : <span className="tf-chip" style={{ background: '#f1f1f1', color: '#8a8a8a' }}>Sourcing…</span>
+              ) : stage === 'dots' ? (
+                <button
+                  type="button"
+                  className="tf-gdot tf-gdot--btn"
+                  title={`Show everyone in ${wrapped ? 'Thanked' : stages[reached].label}`}
+                  onClick={(e) => { e.stopPropagation(); onFilter(filter === reached ? null : reached); }}
+                >
+                  <i style={{ background: CHIP_FILLS[reached].bg }} />{wrapped ? 'Thanked' : stages[reached].label}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="tf-chip tf-chip--btn"
+                  style={{ background: CHIP_FILLS[reached].bg, color: CHIP_FILLS[reached].ink }}
+                  title={`Show everyone in ${wrapped ? 'Thanked' : stages[reached].label}`}
+                  onClick={(e) => { e.stopPropagation(); onFilter(filter === reached ? null : reached); }}
+                >
+                  {wrapped ? 'Thanked' : stages[reached].label}
+                </button>
+              )}
+              {wrapped && !c.mystery && <span className="tf-stamp">💌 Sent</span>}
+            </span>
+          )}
+
+          <span className="am-chev">
+            {wrapped && !c.mystery ? (
+              <span className="tf-seepost">See her post ↗</span>
+            ) : (
+              !foundRow && <img src={ICO.chevron} alt="" style={{ rotate: open ? '270deg' : '90deg' }} />
+            )}
+          </span>
+        </div>
+        {open && (
+          <div className="am-hist">
+            <p className="am-hist-title">Stage history</p>
+            <div className="cp-crew-history am-hist-body">
+              {timeline.map((st, si) => {
+                const state = c.mystery
+                  ? (st.live ? 'now' : st.when ? 'done' : 'next')
+                  : si < c.stage ? 'done' : si === c.stage ? 'now' : 'next';
+                return (
+                  <div key={si} className={`cp-hist-step cp-hist-step--${state}`} style={{ animationDelay: `${0.05 * si}s` }}>
+                    <span className="cp-hist-dot">{state === 'done' ? '✓' : ''}</span>
+                    <div className="cp-hist-body">
+                      <div className="cp-hist-top">
+                        <span className="cp-hist-label">{c.mystery ? st.label : STAGE_LABELS[si]}</span>
+                        <span className="cp-hist-when">{state === 'done' ? (st.when || 'done') : state === 'now' ? 'right now' : 'up next'}</span>
+                      </div>
+                      <div className="cp-hist-detail">{st.detail}</div>
+                      {state === 'now' && <div className="cp-hist-live"><LiveStatus status={c.status} /></div>}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  /* ---- section plan: 4D action group · 7B late split ---------------------
+     rows arrive pre-sorted (action items first); segments re-cut them. */
+  const needsRows = rows.filter(isAmber);
+  const liveRows = rows.filter(isLive);
+  const restRows = rows.filter((c) => !isAmber(c) && !isLive(c));
+  const actGroup = act === 'group' && needsRows.length > 0 && !wrapped && !filtered;
+  const lateGroups = late === 'groups' && liveRows.length > 0 && !wrapped && !filtered;
+  const grouped = actGroup || lateGroups;
+
+  return (
+    <section className="am-card am-table tf-table" aria-label="Creators">
+      <div className={`am-card-head tf-head${head === 'white' ? ' tf-head--white' : ''}`}>
+        <div className="am-head-l rel-anchor">
+          <span className="amsym am-symtile"><img src={ICO.group} alt="" /></span>
+          <div style={{ position: 'relative' }}>
+            <p className="am-card-title">Creators</p>
+            {sub}
+            {/* 2E · coach mark — shown once, then never again */}
+            {coaching && (
+              <div className="tf-coach" role="dialog" aria-label="How spots work">
+                <b>Spots fill in reply order.</b> {SPOTS_RULE}
+                <button type="button" className="tf-coach-got" onClick={() => { coachDismissed = true; bump(); }}>Got it</button>
+              </div>
+            )}
+          </div>
+        </div>
+        {/* SHIP Header — the flow lives inside the header (Julia's mock, Jul 28) */}
+        {shipInHead && <div className="tf-steps-h">{stepsSeq}</div>}
+        <div className="am-head-r">
+          {shipInHead && dlBtn('Download orders')}
+          {filtered && (
+            <button type="button" className="am-showall" onClick={() => onFilter(null)}>
+              Show all <span aria-hidden>✕</span>
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* §6 · the shipping flow reads as a flow — download is step one */}
+      {shipDay && !shipInHead && (
+        <div className="tf-steps">
+          <div className="tf-steps-l">{stepsSeq}</div>
+          {dlBtn('Download order sheet')}
+        </div>
+      )}
+
+      {/* §5 · the moment band — celebration (and its education) above the rows */}
+      {liveAll.length > 0 && !wrapped && (
+        <div className="tf-band">
+          <span className="tf-faces">
+            {liveAll.map((c) => <img key={c.name} src={PHOTOS[c.name]} alt="" />)}
+          </span>
+          <span className="tf-band-txt">
+            <b>{liveLabel} went live 🎉</b> — this is when a thank-you lands the deepest. Creators who feel the love post again.
+          </span>
+          {purpleBtns ? (
+            <button type="button" className="tf-pbtn tf-pbtn--love tf-band-cta"><i aria-hidden>♡</i> Send yours</button>
+          ) : (
+            <button type="button" className="tf-abtn tf-band-cta">Send yours</button>
+          )}
+        </div>
+      )}
+
+      {/* §7 · wrap day — the table becomes a trophy shelf (7C) */}
+      {wrapped && (
+        <div className="tf-wrapband">
+          <span className="tf-wrap-emoji" aria-hidden>🎉</span>
+          <div>
+            <p className="tf-wrap-big">All {cohort} live — every thank-you sent</p>
+            <p className="tf-wrap-sub">Wrapped 37 days ahead of average · your wrap-up is ready</p>
+          </div>
+        </div>
+      )}
+
+      {/* no column strip in F — the header + rows carry the reading (Julia, Jul 28:
+          "double header" once the status-light sub landed) */}
+
+      {/* 2C · the system row — education as a dismissable row, speaking table */}
+      {edu === 'c' && inviting && !sysRowDismissed && (
+        <div className="tf-sysrow">
+          <span aria-hidden>🎟️</span>
+          <span><b>{SPOTS} spots, first come first matched</b> — {SPOTS_RULE.replace(/^First/, 'the first').replace(' take the spots', ' are in').replace('.', '.')}</span>
+          <button type="button" className="tf-sysrow-x" aria-label="Dismiss" onClick={() => { sysRowDismissed = true; bump(); }}>✕</button>
+        </div>
+      )}
+
+      {rows.length === 0 ? (
+        <div className="am-empty">
+          <p className="am-empty-title">Nobody is in {AM_FILTER_LABEL(filter, scene.mode) ?? 'this filter'} right now</p>
+          <p className="am-empty-sub">The stage is empty at the moment. Clear the filter to see the rest of the cohort.</p>
+          <button type="button" className="am-showall am-empty-btn" onClick={() => onFilter(null)}>
+            Show all creators
+          </button>
+        </div>
+      ) : !grouped ? (
+        /* ACTIONS Calm (4C): gold text + pill only — no row wash, no edge */
+        rows.map((c, i) => renderRow(c, i, { calm: act === 'calm' }))
+      ) : (
+        <>
+          {actGroup ? (
+            <>
+              <div className="tf-ghead tf-ghead--amber"><span className="tf-gn">{needsRows.length}</span>Waiting on you</div>
+              {needsRows.map((c, i) => renderRow(c, `n${i}`, { calm: true }))}
+            </>
+          ) : (
+            needsRows.map((c, i) => renderRow(c, `n${i}`, { calm: act === 'calm' }))
+          )}
+          {lateGroups ? (
+            <>
+              {restRows.length > 0 && (
+                <>
+                  <div className="tf-ghead"><span className="tf-gn tf-gn--grey">{restRows.length}</span>Still in motion</div>
+                  {restRows.map((c, i) => renderRow(c, `r${i}`))}
+                </>
+              )}
+              <div className="tf-ghead tf-ghead--green"><span className="tf-gn tf-gn--green">{liveRows.length}</span>Live this week 🎉</div>
+              {liveRows.map((c, i) => renderRow(c, `l${i}`))}
+            </>
+          ) : (
+            <>
+              {actGroup && (liveRows.length + restRows.length) > 0 && (
+                <div className="tf-ghead tf-ghead--green"><span className="tf-gn tf-gn--green">{liveRows.length + restRows.length}</span>Moving on their own</div>
+              )}
+              {[...liveRows, ...restRows].map((c, i) => renderRow(c, `m${i}`))}
+            </>
+          )}
+        </>
+      )}
+
+      {/* 2B · the footnote — one quiet line, gone once everyone accepts */}
+      {edu === 'b' && inviting && (
+        <div className="tf-footnote">💡 {SPOTS_RULE}</div>
+      )}
+
+      {modal && <ActionModal act={modal} onClose={() => setModal(null)} />}
+    </section>
+  );
+}
+
+/* 2D · Katie says it — education in the voice that already teaches.
+   Rendered by the rail (CampaignPulse passes it) so the table stays clean. */
+export function KatieSpotsNote() {
+  return (
+    <section className="am-card tf-katie">
+      <span className="tf-katie-face" aria-hidden>K</span>
+      <div>
+        <p className="tf-katie-note">
+          Your {SPOTS} invites are out! First {SPOTS} to say yes are in — if more reply, we save them for your next round. Good problem to have 😉
+        </p>
+        <p className="tf-katie-sig">Katie · for your Benable team</p>
+      </div>
+    </section>
+  );
+}

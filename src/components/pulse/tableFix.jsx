@@ -173,7 +173,7 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
     const statusCell = c.mystery && !foundRow ? (
       <span className="tf-gdot"><i style={{ background: '#d5d8d5' }} />Sourcing…</span>
     ) : foundRow ? (
-      <span className="tf-gdot"><i style={{ background: '#d5d8d5' }} />Match found</span>
+      <span className="tf-gdot"><i style={{ background: '#f0a32e' }} />Match found</span>
     ) : (
       <span className="tf-statcell">
         <button
@@ -182,8 +182,8 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
           title={`Show everyone in ${wrapped ? 'Thanked' : stages[reached].label}`}
           onClick={(e) => { e.stopPropagation(); onFilter(filter === reached ? null : reached); }}
         >
-          {/* the amber signal moved into the action button (Julia, Jul 28) */}
-          <i style={{ background: CHIP_FILLS[reached].bg }} />{wrapped ? 'Thanked' : stages[reached].label}
+          {/* needs-you rows: the status dot goes amber too (Julia, Jul 28) */}
+          <i style={{ background: amber ? '#f0a32e' : CHIP_FILLS[reached].bg }} />{wrapped ? 'Thanked' : stages[reached].label}
         </button>
         {wrapped && <span className="tf-stamp">💌 Sent</span>}
       </span>

@@ -310,7 +310,7 @@
 .tf-steps-l { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .tf-step { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; color: #555; }
 .tf-sn { display: inline-grid; place-items: center; width: 17px; height: 17px; border-radius: 999px; border: 1.5px solid #c9c9c9; color: #8a8a8a; font-size: 10px; font-weight: 700; font-style: normal; }
-.tf-step--done { color: #5c7d6c; }
+.tf-step--done { color: #1c1c1c; }
 .tf-step--done .tf-sn { border-color: #d7ebe0; background: #d7ebe0; color: #2e9e6b; }
 .tf-step--now { color: #1c1c1c; font-weight: 600; }
 .tf-step--now .tf-sn { border-color: #f0a32e; color: #a86a00; }

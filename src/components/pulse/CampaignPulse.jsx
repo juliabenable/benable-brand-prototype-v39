@@ -148,7 +148,7 @@ export default function CampaignPulse() {
       ) : (
         <>
           <AmineProgress2 scene={scene} filter={stageFilter} onFilter={setStageFilter} />
-          <div className="cp-crew2 tf-noicons" key={`b-${scene.day}`}>
+          <div className={`cp-crew2 tf-noicons${tg.head === 'grey' ? ' tf-heads-grey' : ''}`} key={`b-${scene.day}`}>
             <div className="cp-crew-cols cp-crew-cols--left">
               <div className="cp-crew-left">
                 <FixedTable

@@ -277,6 +277,8 @@
 .tf-table .tf-wraprow { grid-template-columns: 218px minmax(0, 1fr) 170px 96px; }
 .tf-head { overflow: visible; background: #f8f9fa; border-radius: 16px 16px 0 0; } /* the strip's grey moves up: header = zone, rows = content (Julia, Jul 28) */
 .tf-head--white { background: #fff; }
+/* Grey header variant tints the rail cards too (While you were away / Up next) */
+.tf-heads-grey .cp-tile-stack .am-card-head { background: #f8f9fa; border-radius: 16px 16px 0 0; }
 /* ICONS Off — titles carry the cards alone (Julia's mock, Jul 28) */
 .tf-noicons .am-symtile { display: none; }
 /* SHIP Header — steps inline between title and download button */

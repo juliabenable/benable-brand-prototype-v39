@@ -188,10 +188,10 @@ export function AmineRailBar({ scene, filter, onFilter }) {
           <RailColumn
             key={s.label}
             label={s.label}
-            hint={past ? `All ${f.named.length} passed this stage` : hint(n, f.named.length)}
+            hint={past ? `All ${f.named.length} moved on` : hint(n, f.named.length)}
             count={past
               /* a lone muted tick — the count lives in the hint below (Julia, Jul 28) */
-              ? <span className="am2-check" role="img" aria-label={`All ${f.named.length} passed this stage`}>✓</span>
+              ? <span className="am2-check" role="img" aria-label={`All ${f.named.length} moved on`}>✓</span>
               /* everyone thanked → the wrap gets its sparkle (Julia, Jul 27) */
               : i === last && n > 0 && n === f.named.length ? `${n} ✨` : n}
             fill={past ? '#eff5f1' : empty ? undefined : rail.fill}

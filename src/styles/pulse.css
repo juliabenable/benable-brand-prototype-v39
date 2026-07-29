@@ -95,11 +95,12 @@
 /* shared segment states */
 .am-dim { opacity: 0.38; }
 .am-seg--active { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.14); }
-/* empty (future) stages: hatched so they read as slabs against the grey pane
-   (Julia, Jul 28 — the plain-grey simplification blended into the background) */
-.am-seg--sliver { background-color: #f1f3f1; background-image: repeating-linear-gradient(53.76deg, transparent 0 4.4px, rgba(196,204,197,0.7) 4.4px 6px); }
+/* empty (future) stages: plain light grey — a shade below the #f9fafb pane so
+   the slab still reads, no stripes (UI polish round, Julia Jul 28) */
+.am-seg--sliver { background-color: #eef0f1; }
 /* 20px round needs-you badge (Julia: the 14px pill read squished) */
-.am-badge { pointer-events: none; position: absolute; top: -9px; right: 1px; display: flex; height: 20px; min-width: 20px; align-items: center; justify-content: center; border-radius: 999px; border: 1.5px solid #fff; background: #e0900f; padding: 0 5px; font-size: 11px; font-weight: 800; line-height: 1; letter-spacing: 0.0923px; color: #fff; filter: drop-shadow(0 1px 2px rgba(180,83,9,0.28)); z-index: 2; }
+/* box-sizing + grid centering keep the count dead-center (Julia, Jul 28) */
+.am-badge { pointer-events: none; position: absolute; top: -9px; right: 1px; box-sizing: border-box; display: grid; place-items: center; height: 20px; min-width: 20px; border-radius: 999px; border: 1.5px solid #fff; background: #e0900f; padding: 0 5px; font-size: 11px; font-weight: 800; line-height: 1; letter-spacing: 0; font-variant-numeric: tabular-nums; color: #fff; filter: drop-shadow(0 1px 2px rgba(180,83,9,0.28)); z-index: 2; }
 
 /* the stage rail — his V2: equal columns, 4px gap, 40px slabs
    (74px left / 100px right outer corners, 4px interior), label 12.5/600 +
@@ -109,9 +110,8 @@
 .am2-bar { position: relative; display: flex; height: 40px; width: 100%; align-items: center; justify-content: center; border: none; padding: 0; font-family: inherit; cursor: pointer; transition: transform 0.2s cubic-bezier(.22,1,.36,1), box-shadow 0.2s linear; }
 .am2-bar:disabled { cursor: default; }
 .am2-count { font-size: 13px; font-weight: 700; line-height: 16.9px; letter-spacing: -0.0762px; }
-.am2-check { font-size: 15px; font-weight: 800; color: #17864f; }
-.am2-past { display: inline-flex; align-items: center; gap: 5px; }
-.am2-past-tick { font-size: 11px; font-weight: 800; }
+/* done = one quiet grey-green tick, no count — binary, not arithmetic */
+.am2-check { font-size: 13px; font-weight: 700; color: #7fa892; }
 .am2-badge { pointer-events: auto; cursor: pointer; right: 3px; border: 1.5px solid #fff; font-family: inherit; }
 .am2-leg { display: flex; height: 49px; flex-direction: column; align-items: flex-start; overflow: hidden; padding: 0 7px 0 8px; }
 .am2-label { margin: 0; font-size: 12.5px; font-weight: 600; line-height: 16.25px; letter-spacing: -0.0366px; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
@@ -244,7 +244,6 @@
 .am-head-r { display: flex; align-items: center; gap: 8px; flex: none; }
 /* sits on the right side of the table header (Julia's mock, Jul 27) */
 .am-spots-note { margin: 0; max-width: 430px; font-size: 12px; line-height: 1.5; color: #717171; text-wrap: pretty; }
-.am2-past { font-weight: 700; }
 
 /* the found-match row trades its stage dashes for a review CTA */
 .am-row-cta { display: inline-flex; align-items: center; height: 30px; padding: 0 13px; border-radius: 999px; background: #7a5cfa; font-size: 12px; font-weight: 600; color: #fff; white-space: nowrap; justify-self: start; }

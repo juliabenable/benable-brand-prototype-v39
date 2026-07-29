@@ -46,11 +46,12 @@ let coachDismissed = false;
 const SPOTS_RULE = `First ${SPOTS} to reply take the spots — extras are saved for your next campaign.`;
 
 export default function FixedTable({ scene, rows, filter, onFilter, openCrew, toggleCrew, opts = {} }) {
-  const { edu = 'b', stage = 'chips', act = 'rows', late = 'quiet', head = 'grey', ship = 'band', btn = 'amber', layout = 'f' } = opts;
+  const { edu = 'b', stage = 'chips', act = 'rows', late = 'quiet', head = 'grey', ship = 'band', btn = 'amber', layout = 'f', ring = 'solid' } = opts;
   const split = layout === 'g' || layout === 'h'; // G/H · dedicated status + action columns
   const swapCols = layout === 'h'; // H · action column before status column
-  const ghostBtns = layout === 'i' || layout === 'j'; // I/J · no action column — the ghost button replaces the status dot
-  const flushDot = layout === 'j'; // J · the button's dot aligns with the status dots around it
+  const ghostBtns = layout === 'i' || layout === 'j' || layout === 'k'; // I/J/K · no action column — the ghost button replaces the status dot
+  const flushDot = layout === 'j' || layout === 'k'; // J/K · the button's dot aligns with the status dots around it
+  const bandInHead = layout === 'k'; // K · the moment band's message lives in the header (rows carry Say thanks)
   const purpleBtns = btn === 'purple';
   const [, bump] = useReducer((n) => n + 1, 0);
   const crewAll = crewFor(scene.day, scene.mode);
@@ -67,6 +68,10 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
   /* thanks is a gift, not a task — it never counts into the amber light */
   const isAmber = (c) => needsAction(c) && !isLive(c);
   const liveAll = crewAll.filter(isLive);
+  const liveNames = liveAll.map((c) => c.name);
+  const liveLabel = liveNames.length > 1
+    ? `${liveNames.slice(0, -1).join(', ')} and ${liveNames[liveNames.length - 1]}`
+    : liveNames[0];
   const needs = crewAll.filter(isAmber).length;
   const coaching = edu === 'e' && inviting && !coachDismissed;
 
@@ -91,6 +96,7 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
   ) : (
     <span className="am-card-sub"><i className="tf-dot" style={{ background: '#2baf87' }} />
       {wrapped ? 'Nothing left to do — campaign wrapped'
+        : liveAll.length && bandInHead ? `${liveLabel} went live 🎉 — a thank-you lands the deepest`
         : liveAll.length ? `Nothing needs you — ${liveAll.length} live this week`
         : 'Nothing needs you — everyone’s moving'}
     </span>
@@ -136,11 +142,6 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
       {label}
     </button>
   );
-
-  const liveNames = liveAll.map((c) => c.name);
-  const liveLabel = liveNames.length > 1
-    ? `${liveNames.slice(0, -1).join(', ')} and ${liveNames[liveNames.length - 1]}`
-    : liveNames[0];
 
   /* ---- one row ---------------------------------------------------------- */
   const renderRow = (c, i, { calm = false } = {}) => {
@@ -221,7 +222,7 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
             {foundRow ? (
               <span className="am-avatar am-avatar--blur"><img src={PHOTOS.Amara} alt="" /></span>
             ) : !c.mystery && PHOTOS[c.name] ? (
-              <span className={wrapped ? 'tf-ring' : undefined}><span className="am-avatar"><img src={PHOTOS[c.name]} alt="" /></span></span>
+              <span className={wrapped ? `tf-ring tf-ring--${ring}` : undefined}><span className="am-avatar"><img src={PHOTOS[c.name]} alt="" /></span></span>
             ) : (
               <span className="am-avatar am-avatar--mystery">?</span>
             )}
@@ -268,7 +269,10 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
               {purpleBtns ? (
                 <button type="button" className="tf-pbtn tf-pbtn--love" onClick={(e) => e.stopPropagation()}><i aria-hidden>♡</i> Say thanks</button>
               ) : ghostBtns ? (
-                <button type="button" className={`tf-gbtn${flushDot ? ' tf-gbtn--flush tf-gbtn--nodot' : ''}`} onClick={(e) => e.stopPropagation()}>Say thanks</button>
+                /* thanks wears a quiet heart on the dot axis (Julia, Jul 28) */
+                <button type="button" className={`tf-gbtn${flushDot ? ' tf-gbtn--flush' : ''}`} onClick={(e) => e.stopPropagation()}>
+                  <i className="tf-btnheart" aria-hidden>♥</i>Say thanks
+                </button>
               ) : (
                 <button type="button" className="tf-abtn" onClick={(e) => e.stopPropagation()}>Say thanks</button>
               )}
@@ -389,6 +393,12 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
         {/* SHIP Header — the flow lives inside the header (Julia's mock, Jul 28) */}
         {shipInHead && <div className="tf-steps-h">{stepsSeq}</div>}
         <div className="am-head-r">
+          {/* K · the live faces join the header instead of a band */}
+          {bandInHead && liveAll.length > 0 && !wrapped && !filtered && (
+            <span className="tf-faces" aria-hidden>
+              {liveAll.map((c) => <img key={c.name} src={PHOTOS[c.name]} alt="" />)}
+            </span>
+          )}
           {shipInHead && dlBtn('Download orders')}
           {filtered && (
             <button type="button" className="am-showall" onClick={() => onFilter(null)}>
@@ -407,7 +417,7 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
       )}
 
       {/* §5 · the moment band — celebration (and its education) above the rows */}
-      {liveAll.length > 0 && !wrapped && (
+      {liveAll.length > 0 && !wrapped && !bandInHead && (
         <div className="tf-band">
           <span className="tf-faces">
             {liveAll.map((c) => <img key={c.name} src={PHOTOS[c.name]} alt="" />)}
@@ -431,6 +441,8 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
             <p className="tf-wrap-big">All {cohort} live — every thank-you sent</p>
             <p className="tf-wrap-sub">Wrapped 37 days ahead of average · your wrap-up is ready</p>
           </div>
+          {/* the wrap deserves a door, not just a sentence (Julia, Jul 28) */}
+          <button type="button" className="tf-wrapbtn">🎁 See your wrap-up</button>
         </div>
       )}
 

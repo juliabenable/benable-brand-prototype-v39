@@ -23,7 +23,7 @@ let persistedMode = 'product';
 const F_OPTS = { edu: 'b', stage: 'dots', act: 'calm', late: 'quiet', icons: 'off', btn: 'amber' };
 // the dims Julia kept open (Jul 28): header tint + ship-flow placement +
 // table layout (F = status/button share one slot · G = dedicated columns)
-let persistedToggles = { head: 'grey', ship: 'band', table: 'g' };
+let persistedToggles = { head: 'grey', ship: 'band', table: 'g', ring: 'solid' };
 
 export default function CampaignPulse() {
   const [idx, setIdx] = useState(persistedIdx);
@@ -146,6 +146,14 @@ export default function CampaignPulse() {
         <button type="button" title="H — G with the two columns swapped (action before status)" className={tg.table === 'h' ? 'cp-scrub-day cp-scrub-day--active' : 'cp-scrub-day'} onClick={() => setToggle('table', 'h')}>H</button>
         <button type="button" title="I — no action column; the ghost button replaces the status dot" className={tg.table === 'i' ? 'cp-scrub-day cp-scrub-day--active' : 'cp-scrub-day'} onClick={() => setToggle('table', 'i')}>I</button>
         <button type="button" title="J — like I, with the button's dot aligned to the status dots" className={tg.table === 'j' ? 'cp-scrub-day cp-scrub-day--active' : 'cp-scrub-day'} onClick={() => setToggle('table', 'j')}>J</button>
+        <button type="button" title="K — J with the moment band folded into the header (no Send-yours button)" className={tg.table === 'k' ? 'cp-scrub-day cp-scrub-day--active' : 'cp-scrub-day'} onClick={() => setToggle('table', 'k')}>K</button>
+        <span className="cp-mode-sep" aria-hidden />
+        <span className="cp-scrub-tag">RING</span>
+        {[['grad', 'Gradient ring (original)'], ['solid', 'Solid green ring'], ['soft', 'Soft pastel ring'], ['halo', 'Quiet outer halo'], ['badge', 'No ring — corner ✓ badge']].map(([v, tip]) => (
+          <button key={v} type="button" title={tip} className={tg.ring === v ? 'cp-scrub-day cp-scrub-day--active' : 'cp-scrub-day'} onClick={() => setToggle('ring', v)}>
+            {v[0].toUpperCase() + v.slice(1)}
+          </button>
+        ))}
       </div>
 
 

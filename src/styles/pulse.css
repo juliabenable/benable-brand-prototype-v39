@@ -274,7 +274,6 @@
    gold postcard = joy, never a chore · wrap day = trophy shelf */
 .tf-table { overflow: visible; }
 .tf-table .am-cols, .tf-table .am-row { grid-template-columns: 218px minmax(0, 1fr) 170px 36px; }
-.tf-table .tf-wraprow { grid-template-columns: 218px minmax(0, 1fr) 170px 96px; }
 .tf-head { overflow: visible; background: #f8f9fa; border-radius: 16px 16px 0 0; } /* the strip's grey moves up: header = zone, rows = content (Julia, Jul 28) */
 .tf-head--white { background: #fff; }
 /* Grey header variant tints the rail cards too (While you were away / Up next) */
@@ -416,7 +415,9 @@
 
 /* wrap-day 100% — gradient pop, once */
 @keyframes tf-wrappop { 0% { transform: scale(0.85); opacity: 0; } 60% { transform: scale(1.06); } 100% { transform: scale(1); opacity: 1; } }
-.am-stat-big--wrap { background: linear-gradient(100deg, #17864f, #2baf87 55%, #c9a84c); -webkit-background-clip: text; background-clip: text; color: transparent; animation: tf-wrappop 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+/* wrap 🎉 — a gentle two-bounce on arrival, then still (nothing loops) */
+@keyframes tf-wrapwave { 0%, 55%, 100% { transform: scale(1) rotate(0); } 12% { transform: scale(1.25) rotate(-8deg); } 28% { transform: scale(1.05) rotate(5deg); } 40% { transform: scale(1.15) rotate(-3deg); } }
+.tf-wrapemoji { display: inline-block; font-style: normal; animation: tf-wrapwave 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.3s 1 both; transform-origin: 50% 80%; }
 /* wrap-day post link, riding with the update text */
 .tf-rowlink { flex: none; display: inline-flex; align-items: center; gap: 3px; margin-left: 10px; font-size: 12px; font-weight: 500; color: #555; text-decoration: underline; text-underline-offset: 2px; }
 .tf-rowlink:hover { color: #1c1c1c; }

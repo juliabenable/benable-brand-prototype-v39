@@ -71,9 +71,9 @@ export function AmineStat({ scene }) {
   return (
     <div className="am-stat">
       <div className="am-stat-left">
-        {/* wrap day: the 100% celebrates — gradient + one-time pop (Julia, Jul 28) */}
-        <span className={`am-stat-big${wrapped ? ' am-stat-big--wrap' : ''}`}>{PCT[scene.day]}</span>
-        <span className="am-stat-cap">{wrapped ? 'campaign complete! 🎉' : 'through your campaign'}</span>
+        {/* wrap day: plain 100% (effect removed, Julia) — the 🎉 does the celebrating */}
+        <span className="am-stat-big">{PCT[scene.day]}</span>
+        <span className="am-stat-cap">{wrapped ? <>campaign complete! <i className="tf-wrapemoji" aria-hidden>🎉</i></> : 'through your campaign'}</span>
       </div>
       <div className="am-stat-note">
         <span aria-hidden>{wrapped ? '🎉' : '🚀'}</span>

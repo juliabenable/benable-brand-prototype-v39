@@ -326,10 +326,15 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
                       </div>
                       {/* future steps only say what's PLANNED — never a past
                           fact we couldn't know yet (Julia, Jul 28) */}
+                      {/* detail = a fact that stays true forever; `now` carries the
+                          forward-looking flavor and only shows while current
+                          (Julia, Jul 28 — no "shoot confirmed" on passed steps) */}
                       <div className="cp-hist-detail">
                         {state === 'next' && !c.mystery
                           ? (st.next || NEXT_HINTS[scene.mode === 'local' ? 'local' : 'product'][si])
-                          : st.detail}
+                          : state === 'now'
+                            ? (st.now || st.detail)
+                            : st.detail}
                       </div>
                       {/* once she's live, the step links to the post itself */}
                       {!c.mystery && si === 5 && state !== 'next' && (

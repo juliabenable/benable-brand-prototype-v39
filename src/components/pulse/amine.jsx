@@ -189,11 +189,12 @@ export function AmineRailBar({ scene, filter, onFilter }) {
           <RailColumn
             key={s.label}
             label={s.label}
-            /* past ⇒ the whole cohort — say so ("All 6 moved ahead", Julia) */
-            hint={past ? `All ${f.named.length} moved ahead` : hint(n, f.named.length)}
+            /* "All" only when the named creators ARE the whole cohort — while a
+               slot is still sourcing, it's just "5 moved ahead" (Julia, Jul 28) */
+            hint={past ? `${f.named.length === f.rows.length ? 'All ' : ''}${f.named.length} moved ahead` : hint(n, f.named.length)}
             count={past
               /* a lone muted tick — the count lives in the hint below (Julia, Jul 28) */
-              ? <span className="am2-check" role="img" aria-label={`All ${f.named.length} moved ahead`}>✓</span>
+              ? <span className="am2-check" role="img" aria-label={`${f.named.length === f.rows.length ? 'All ' : ''}${f.named.length} moved ahead`}>✓</span>
               /* everyone thanked → the wrap gets its sparkle (Julia, Jul 27) */
               : i === last && n > 0 && n === f.named.length ? `${n} ✨` : n}
             fill={past ? '#eff5f1' : empty ? undefined : rail.fill}

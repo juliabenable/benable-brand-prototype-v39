@@ -178,15 +178,11 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
       <span className="tf-gdot"><i style={{ background: '#f0a32e' }} />Match found</span>
     ) : (
       <span className="tf-statcell">
-        <button
-          type="button"
-          className="tf-gdot tf-gdot--btn"
-          title={`Show everyone in ${wrapped ? 'Thanked' : stages[reached].label}`}
-          onClick={(e) => { e.stopPropagation(); onFilter(filter === reached ? null : reached); }}
-        >
+        {/* plain text — filtering lives on the tracker, not here (Julia, Jul 28) */}
+        <span className="tf-gdot">
           {/* needs-you rows: the status dot goes amber too (Julia, Jul 28) */}
           <i style={{ background: amber ? '#f0a32e' : CHIP_FILLS[reached].bg }} />{wrapped ? 'Thanked' : stages[reached].label}
-        </button>
+        </span>
       </span>
     );
 
@@ -275,7 +271,7 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
                 <button type="button" className="tf-pbtn tf-pbtn--love" onClick={(e) => e.stopPropagation()}><i aria-hidden>♡</i> Say thanks</button>
               ) : ghostBtns ? (
                 /* thanks wears a quiet heart on the dot axis (Julia, Jul 28) */
-                <button type="button" className={`tf-gbtn${flushDot ? ' tf-gbtn--flush' : ''}`} onClick={(e) => e.stopPropagation()}>
+                <button type="button" className={`tf-gbtn${flushDot ? ' tf-gbtn--flush tf-gbtn--thanks' : ''}`} onClick={(e) => e.stopPropagation()}>
                   <i className="tf-btnheart" aria-hidden>♥</i>Say thanks
                 </button>
               ) : (
@@ -289,24 +285,14 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
                   ? <span className="tf-gdot"><i style={{ background: '#d5d8d5' }} />Sourcing…</span>
                   : <span className="tf-chip" style={{ background: '#f1f1f1', color: '#8a8a8a' }}>Sourcing…</span>
               ) : stage === 'dots' ? (
-                <button
-                  type="button"
-                  className="tf-gdot tf-gdot--btn"
-                  title={`Show everyone in ${wrapped ? 'Thanked' : stages[reached].label}`}
-                  onClick={(e) => { e.stopPropagation(); onFilter(filter === reached ? null : reached); }}
-                >
+                /* plain text — filtering lives on the tracker (Julia, Jul 28) */
+                <span className="tf-gdot">
                   <i style={{ background: CHIP_FILLS[reached].bg }} />{wrapped ? 'Thanked' : stages[reached].label}
-                </button>
+                </span>
               ) : (
-                <button
-                  type="button"
-                  className="tf-chip tf-chip--btn"
-                  style={{ background: CHIP_FILLS[reached].bg, color: CHIP_FILLS[reached].ink }}
-                  title={`Show everyone in ${wrapped ? 'Thanked' : stages[reached].label}`}
-                  onClick={(e) => { e.stopPropagation(); onFilter(filter === reached ? null : reached); }}
-                >
+                <span className="tf-chip" style={{ background: CHIP_FILLS[reached].bg, color: CHIP_FILLS[reached].ink }}>
                   {wrapped ? 'Thanked' : stages[reached].label}
-                </button>
+                </span>
               )}
             </span>
           )}

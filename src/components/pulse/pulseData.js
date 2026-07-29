@@ -52,7 +52,7 @@ export const CREW = {
     { name: 'Sofia', handle: '@sofia.films', stage: 1, status: { type: 'static', phrases: ['✅ Confirmed — shipping next'] } },
     { name: 'Jade', handle: '@jadebythesea', stage: 2, status: { type: 'facts', phrases: ['📬 Delivered yesterday'] } },
     { name: 'Priya', handle: '@priyacreates', stage: 1, status: { type: 'facts', phrases: ['💭 Sketching content ideas'] } },
-    { mystery: true, name: 'Casting…', stage: 0, status: { type: 'shimmer', phrases: ['Sourcing her replacement…', 'Vetting stand-ins…', 'Checking availability…'] } },
+    { mystery: true, name: 'Casting…', stage: 0, status: { type: 'shimmer', phrases: ['Sourcing her replacement…', 'Katie’s team is on it…'] } },
   ],
   /* Day 10 · non-Shopify (CSV) fulfillment: the brand ships. Accepted rows
      carry a Mark-shipped action (ship: true) + the header grows a
@@ -63,7 +63,7 @@ export const CREW = {
     { name: 'Jade', handle: '@jadebythesea', stage: 2, product: 'SPF 50 Tinted', status: { type: 'facts', phrases: ['📦 In transit — arriving Thursday'] } },
     { name: 'Sofia', handle: '@sofia.films', stage: 1, ship: true, product: 'SPF 50 Tinted', action: { cta: 'Mark shipped' }, status: { type: 'static', phrases: ['Order ready to ship'] } },
     { name: 'Priya', handle: '@priyacreates', stage: 1, ship: true, product: 'After-Sun Serum', action: { cta: 'Mark shipped' }, status: { type: 'static', phrases: ['Order ready to ship'] } },
-    { mystery: true, name: 'Casting…', stage: 0, status: { type: 'shimmer', phrases: ['Sourcing her replacement…', 'Vetting stand-ins…', 'Checking availability…'] } },
+    { mystery: true, name: 'Casting…', stage: 0, status: { type: 'shimmer', phrases: ['Sourcing her replacement…', 'Katie’s team is on it…'] } },
   ],
   11: [
     { name: 'Maya', handle: '@maya.skin', stage: 3, status: { type: 'facts', phrases: ['📬 Delivered — unboxing soon'] } },
@@ -212,7 +212,7 @@ export const LOCAL = {
       { name: 'Jade', handle: '@jadebythesea', stage: 2, status: { type: 'facts', phrases: ['📅 Visiting Sunday — asked about parking'] } },
       { name: 'Sofia', handle: '@sofia.films', stage: 1, confirmEmail: true, action: { cta: 'Confirm' }, status: { type: 'static', phrases: ['She emailed you'] } },
       { name: 'Priya', handle: '@priyacreates', stage: 1, status: { type: 'facts', phrases: ['Will email you to book her visit'] } },
-      { mystery: true, name: 'Casting…', stage: 0, status: { type: 'shimmer', phrases: ['Sourcing her replacement…', 'Vetting stand-ins…', 'Checking availability…'] } },
+      { mystery: true, name: 'Casting…', stage: 0, status: { type: 'shimmer', phrases: ['Sourcing her replacement…', 'Katie’s team is on it…'] } },
     ],
     11: [
       { name: 'Maya', handle: '@maya.skin', stage: 3, status: { type: 'facts', phrases: ['✨ Visited Thursday — content in the works'] } },

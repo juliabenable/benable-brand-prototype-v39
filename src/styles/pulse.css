@@ -55,7 +55,7 @@
 
 /* ---- live status registers: every animation is a claim ---- */
 .cp-live { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; min-height: 20px; min-width: 0; }
-.cp-live-shimmer { font-weight: 500; background: linear-gradient(90deg, #9a9a9a 0%, #7a5cfa 35%, #b48cff 50%, #9a9a9a 65%); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: cp-shimmer 2s linear infinite, cp-swap 0.4s ease both; }
+.cp-live-shimmer { font-weight: 500; background: linear-gradient(90deg, #9a9a9a 0%, #2e9e6b 35%, #86d9b2 50%, #9a9a9a 65%); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: cp-shimmer 2s linear infinite, cp-swap 0.4s ease both; }
 .cp-live-fact { color: #1a1a1a; font-weight: 500; animation: cp-swap 0.4s ease both; }
 .cp-live-fact--gray { color: #717171; font-weight: 400; }
 .cp-live-breathe { animation: cp-breathe 3.4s ease-in-out infinite; }
@@ -334,7 +334,6 @@
 .tf-live { background: linear-gradient(90deg, #fffdf4, #fff 60%); }
 .tf-chipslot { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
 .tf-chip { display: inline-flex; align-items: center; height: 24px; padding: 0 11px; border-radius: 999px; border: none; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
-.tf-chip--btn { cursor: pointer; font-family: inherit; }
 .tf-stamp { font-size: 11px; font-weight: 500; color: #9a8a55; white-space: nowrap; }
 .tf-wrapband { display: flex; align-items: center; gap: 12px; padding: 13px 20px; background: linear-gradient(90deg, #f0faf4, #fff); border-bottom: 1px solid #dcefe3; }
 .tf-wrap-emoji { font-size: 18px; }
@@ -360,7 +359,6 @@
 /* 3A · ramp dot + stage word */
 .tf-gdot { display: inline-flex; align-items: center; gap: 7px; border: none; background: none; padding: 0; font-family: inherit; font-size: 12.5px; font-weight: 500; color: #444; white-space: nowrap; }
 .tf-gdot i { display: block; width: 8px; height: 8px; border-radius: 999px; flex: none; }
-.tf-gdot--btn { cursor: pointer; }
 /* 2C · system row */
 .tf-sysrow { display: flex; align-items: center; gap: 12px; padding: 12px 20px; background: #fcfcfd; border-bottom: 1px solid #ececec; border-left: 3px solid #e3e3e3; font-size: 12.5px; color: #555; }
 .tf-sysrow b { color: #1c1c1c; }
@@ -401,7 +399,9 @@
 
 /* J · the button's dot sits exactly where the status dots sit — the button
    grows left so its inner dot lands on the column's dot axis */
-.tf-gbtn--flush { margin-left: -14px; width: calc(100% + 14px); justify-content: flex-start; }
+.tf-gbtn--flush { margin-left: -14px; justify-content: flex-start; }
+/* narrower Say-thanks: ends a tad past the "d" of Approved (Julia, Jul 28) */
+.tf-gbtn--thanks { width: 130px; }
 .tf-gbtn--nodot { padding-left: 13px; }
 /* Say-thanks heart — soft pink, gently pulsing, on the dot axis */
 @keyframes tf-heartpulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.18); } }

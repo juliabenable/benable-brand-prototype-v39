@@ -319,8 +319,9 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
                     <span className="cp-hist-dot">{state === 'done' ? '✓' : ''}</span>
                     <div className="cp-hist-body">
                       <div className="cp-hist-top">
-                        {/* history speaks the tracker's stage names (Julia, Jul 28) */}
-                        <span className="cp-hist-label">{c.mystery ? st.label : stages[si].label}</span>
+                        {/* history speaks the tracker's stage names — except the
+                            finale, which gets its exclamation (Julia, Jul 28) */}
+                        <span className="cp-hist-label">{c.mystery ? st.label : si === 5 ? 'Live!' : stages[si].label}</span>
                         <span className="cp-hist-when">{state === 'done' ? (st.when || 'done') : state === 'now' ? 'right now' : 'up next'}</span>
                       </div>
                       {/* future steps only say what's PLANNED — never a past
@@ -330,6 +331,12 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
                           ? (st.next || NEXT_HINTS[scene.mode === 'local' ? 'local' : 'product'][si])
                           : st.detail}
                       </div>
+                      {/* once she's live, the step links to the post itself */}
+                      {!c.mystery && si === 5 && state !== 'next' && (
+                        <a className="tf-histlink" href="#" onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
+                          See the live post <span aria-hidden>↗</span>
+                        </a>
+                      )}
                       {state === 'now' && <div className="cp-hist-live"><LiveStatus status={c.status} /></div>}
                     </div>
                   </div>

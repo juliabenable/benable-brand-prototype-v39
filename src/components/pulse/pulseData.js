@@ -77,12 +77,12 @@ export const CREW = {
      draft (Julia, Jul 27) — no brand-approval step in v1, so stage 4 =
      Draft approved and vetting shows as status, not as a stage move. */
   16: [
-    { name: 'Jade', handle: '@jadebythesea', stage: 3, status: { type: 'shimmer', phrases: ['Reel submitted — checking quality…', 'Running brand-safety checks…', 'Checking the disclosure tag…'] } },
-    { name: 'Priya', handle: '@priyacreates', stage: 3, status: { type: 'shimmer', phrases: ['Story set submitted — checking quality…', 'Running brand-safety checks…'] } },
-    { name: 'Maya', handle: '@maya.skin', stage: 3, status: { type: 'facts', phrases: ['🎥 Filming Saturday — confirmed Tuesday'] } },
-    { name: 'Nia', handle: '@niaglow', stage: 3, status: { type: 'facts', phrases: ['🤳 Posted a BTS teaser to stories'] } },
-    { name: 'Sofia', handle: '@sofia.films', stage: 3, status: { type: 'facts', phrases: ['💭 Storyboarding her before/after'] } },
-    { name: 'Amara', handle: '@amara.gold', stage: 3, status: { type: 'facts', phrases: ['🎬 First shoot this week'] } },
+    { name: 'Jade', handle: '@jadebythesea', stage: 3, status: { type: 'shimmer', phrases: ['Reel submitted — checking quality…', 'Katie’s team is on it…'] } },
+    { name: 'Priya', handle: '@priyacreates', stage: 3, status: { type: 'shimmer', phrases: ['Story set submitted — checking quality…'] } },
+    { name: 'Maya', handle: '@maya.skin', stage: 3, status: { type: 'facts', phrases: ['🎥 Films Saturday — confirmed with Katie’s team'] } },
+    { name: 'Nia', handle: '@niaglow', stage: 3, status: { type: 'facts', phrases: ['⏰ Draft due Sunday — we’re keeping her on pace'] } },
+    { name: 'Sofia', handle: '@sofia.films', stage: 3, status: { type: 'facts', phrases: ['🎬 Filming this week — draft due Sunday'] } },
+    { name: 'Amara', handle: '@amara.gold', stage: 3, status: { type: 'facts', phrases: ['📅 Shoot booked for this week'] } },
   ],
   /* content published + not yet thanked ⇒ always an action item nudging the
      thank-you (Julia, Jul 27) */
@@ -116,8 +116,8 @@ export const NEXT_HINTS = {
     'Waiting on her reply',
     'Product pick + shipping label',
     'Delivery — we watch the tracking',
-    'Draft + disclosure pre-checks',
-    'Post goes live · we watch the first hours',
+    'Draft + quality checks',
+    'Post goes live — we track how it’s doing for you!',
     'Your thank-you — right after she posts',
   ],
   local: [
@@ -125,8 +125,8 @@ export const NEXT_HINTS = {
     'Waiting on her reply',
     'She emails you to book her visit',
     'Visit day — weekdays only',
-    'Draft + disclosure pre-checks',
-    'Post goes live · we watch the first hours',
+    'Draft + quality checks',
+    'Post goes live — we track how it’s doing for you!',
     'Your thank-you — right after she posts',
   ],
 };
@@ -137,7 +137,7 @@ export const TIMELINES = {
     { when: 'Jul 17', detail: 'Accepted in under 5 hours' },
     { when: 'Jul 21', detail: 'Picked SPF 50 Tinted' },
     { next: 'Scheduled for delivery Thursday', when: 'Jul 24', detail: 'Delivered Jul 24 — shoot confirmed for Saturday' },
-    { when: 'Jul 30', detail: 'Draft passed quality + disclosure checks' },
+    { when: 'Jul 30', detail: 'Draft passed quality checks' },
     { when: 'Aug 6', detail: 'Post live — tags verified' },
   ],
   Nia: [
@@ -145,7 +145,7 @@ export const TIMELINES = {
     { when: 'Jul 16', detail: 'Accepted same day 🎉' },
     { when: 'Jul 19', detail: 'Picked Mineral Glow SPF 30' },
     { next: 'Scheduled for delivery Jul 24', when: 'Jul 24', detail: 'Delivered Jul 24 — she teased a BTS story' },
-    { when: 'Jul 29', detail: 'Passed quality + disclosure checks' },
+    { when: 'Jul 29', detail: 'Passed quality checks' },
     { when: 'Aug 5', detail: 'Reel live — her best post this month' },
   ],
   Sofia: [
@@ -169,7 +169,7 @@ export const TIMELINES = {
     { when: 'Jul 17', detail: 'Accepted, confirmed her angle with Katie’s team' },
     { when: 'Jul 22', detail: 'Picked After-Sun Serum' },
     { next: 'Scheduled for delivery Jul 24', when: 'Jul 24', detail: 'Delivered Jul 24 — filming window through Sunday' },
-    { when: 'Jul 29', detail: 'Submitted — pre-checks passed' },
+    { when: 'Jul 29', detail: 'Submitted — quality checks passed' },
     { next: 'Stories go live this week', detail: 'Stories live — tags verified' },
   ],
   Amara: [
@@ -177,7 +177,7 @@ export const TIMELINES = {
     { when: 'Jul 25', detail: 'Accepted in 4 hours' },
     { when: 'Jul 26', detail: 'Express-shipped her product' },
     { next: 'Scheduled for delivery tomorrow', detail: 'Delivered — shoot scheduled this week' },
-    { next: 'Draft due Sunday', detail: 'Draft passed checks' },
+    { next: 'Draft due Sunday', detail: 'Draft passed quality checks' },
     { detail: 'Posted — strong debut' },
   ],
   Lena: [
@@ -279,7 +279,7 @@ export const LOCAL = {
       { when: 'Jul 17', detail: 'Accepted in under 5 hours' },
       { when: 'Jul 21', detail: 'Emailed you — visit set for Tuesday 2pm' },
       { when: 'Jul 23', detail: 'Visited Tuesday 2pm — deep-tissue massage' },
-      { when: 'Jul 30', detail: 'Draft passed pre-checks' },
+      { when: 'Jul 30', detail: 'Draft passed quality checks' },
       { when: 'Aug 6', detail: 'Post live — tags verified' },
     ],
     Nia: [
@@ -287,7 +287,7 @@ export const LOCAL = {
       { when: 'Jul 16', detail: 'Accepted same day 🎉' },
       { when: 'Jul 19', detail: 'Booked her Thursday-morning visit' },
       { when: 'Jul 26', detail: 'Visited Thursday morning' },
-      { when: 'Jul 29', detail: 'Passed quality + disclosure checks' },
+      { when: 'Jul 29', detail: 'Passed quality checks' },
       { when: 'Aug 5', detail: 'Reel live — her best post this month' },
     ],
     Sofia: [
@@ -311,7 +311,7 @@ export const LOCAL = {
       { when: 'Jul 17', detail: 'Accepted, confirmed her angle with Katie’s team' },
       { when: 'Jul 22', detail: 'Visit booked for Thursday' },
       { when: 'Jul 24', detail: 'Visited Thursday' },
-      { when: 'Jul 29', detail: 'Submitted — running pre-checks' },
+      { when: 'Jul 29', detail: 'Submitted — checking quality' },
       { eta: 'this week', detail: 'Stories go live' },
     ],
     Amara: [
@@ -319,7 +319,7 @@ export const LOCAL = {
       { when: 'Jul 25', detail: 'Accepted in 4 hours' },
       { when: 'Jul 26', detail: 'Emailed you — visiting Wednesday' },
       { next: 'Her visit — Wednesday', detail: 'Visited Wednesday' },
-      { next: 'Draft due Sunday', detail: 'Draft passed checks' },
+      { next: 'Draft due Sunday', detail: 'Draft passed quality checks' },
       { detail: 'Posted' },
     ],
     Lena: [

@@ -187,7 +187,6 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
           {/* needs-you rows: the status dot goes amber too (Julia, Jul 28) */}
           <i style={{ background: amber ? '#f0a32e' : CHIP_FILLS[reached].bg }} />{wrapped ? 'Thanked' : stages[reached].label}
         </button>
-        {wrapped && <span className="tf-stamp">💌 Sent</span>}
       </span>
     );
 
@@ -203,7 +202,7 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
     ) : live ? (
       <button type="button" className="tf-gbtn" onClick={(e) => e.stopPropagation()}>Say thanks</button>
     ) : wrapped && !c.mystery ? (
-      <span className="tf-seepost">See her post ↗</span>
+      <span className="tf-stamp">💌 Sent</span>
     ) : (
       <span className="tf-noact" aria-hidden>—</span>
     );
@@ -238,6 +237,12 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
           {/* the update line says why; the flag glyph retired — the edge is the flag */}
           <span className={`am-update${amber ? ' tf-uamber' : ''}`}>
             <LiveStatus status={wrapped ? cleanStatus(c.status) : c.status} />
+            {/* wrap day: the post link rides with the update text (Julia, Jul 28) */}
+            {wrapped && !c.mystery && (
+              <a className="tf-rowlink" href="#" onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
+                See her post <span aria-hidden>↗</span>
+              </a>
+            )}
           </span>
 
           {/* §3/§4/§5 · the stage slot: chip or dot, amber pill, or thanks */}
@@ -303,16 +308,11 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
                   {wrapped ? 'Thanked' : stages[reached].label}
                 </button>
               )}
-              {wrapped && !c.mystery && <span className="tf-stamp">💌 Sent</span>}
             </span>
           )}
 
           <span className="am-chev">
-            {wrapped && !c.mystery && !split ? (
-              <span className="tf-seepost">See her post ↗</span>
-            ) : (
-              !foundRow && <img src={ICO.chevron} alt="" style={{ rotate: open ? '270deg' : '90deg' }} />
-            )}
+            {!foundRow && <img src={ICO.chevron} alt="" style={{ rotate: open ? '270deg' : '90deg' }} />}
           </span>
         </div>
         {/* drawer stays mounted; a grid-rows transition animates open AND

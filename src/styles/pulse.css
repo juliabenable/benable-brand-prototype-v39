@@ -401,7 +401,7 @@
 
 /* J · the button's dot sits exactly where the status dots sit — the button
    grows left so its inner dot lands on the column's dot axis */
-.tf-gbtn--flush { margin-left: -14px; }
+.tf-gbtn--flush { margin-left: -14px; width: calc(100% + 14px); justify-content: flex-start; }
 .tf-gbtn--nodot { padding-left: 13px; }
 /* Say-thanks heart — soft pink, gently pulsing, on the dot axis */
 @keyframes tf-heartpulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.18); } }
@@ -413,3 +413,10 @@
 /* wrap-band CTA — the celebration's door */
 .tf-wrapbtn { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 15px; border-radius: 999px; border: none; background: #17864f; color: #fff; font-family: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: transform 0.12s ease; }
 .tf-wrapbtn:hover { transform: translateY(-1px); }
+
+/* wrap-day 100% — gradient pop, once */
+@keyframes tf-wrappop { 0% { transform: scale(0.85); opacity: 0; } 60% { transform: scale(1.06); } 100% { transform: scale(1); opacity: 1; } }
+.am-stat-big--wrap { background: linear-gradient(100deg, #17864f, #2baf87 55%, #c9a84c); -webkit-background-clip: text; background-clip: text; color: transparent; animation: tf-wrappop 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+/* wrap-day post link, riding with the update text */
+.tf-rowlink { flex: none; display: inline-flex; align-items: center; gap: 3px; margin-left: 10px; font-size: 12px; font-weight: 500; color: #555; text-decoration: underline; text-underline-offset: 2px; }
+.tf-rowlink:hover { color: #1c1c1c; }

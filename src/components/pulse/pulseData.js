@@ -90,9 +90,9 @@ export const CREW = {
     { name: 'Nia', handle: '@niaglow', stage: 5, action: { cta: 'Say thanks' }, status: { type: 'celebrate', emoji: '🎉', phrases: ['Live — 3× her usual views'] } },
     { name: 'Sofia', handle: '@sofia.films', stage: 5, action: { cta: 'Say thanks' }, status: { type: 'celebrate', emoji: '💬', phrases: ['Live on TikTok'] } },
     { name: 'Jade', handle: '@jadebythesea', stage: 5, action: { cta: 'Say thanks' }, status: { type: 'celebrate', emoji: '✨', phrases: ['Live — engagement starting'] } },
-    { name: 'Maya', handle: '@maya.skin', stage: 4, status: { type: 'facts', phrases: ['⏰ Posting Thursday'] } },
-    { name: 'Priya', handle: '@priyacreates', stage: 4, status: { type: 'katie', phrases: ['Katie’s team is scheduling her post'] } },
-    { name: 'Amara', handle: '@amara.gold', stage: 3, status: { type: 'facts', phrases: ['🎬 Final edits — due Sunday'] } },
+    { name: 'Maya', handle: '@maya.skin', stage: 4, status: { type: 'facts', phrases: ['✅ Approved — posting Thursday'] } },
+    { name: 'Priya', handle: '@priyacreates', stage: 4, status: { type: 'facts', phrases: ['✅ Approved — going live this week'] } },
+    { name: 'Amara', handle: '@amara.gold', stage: 3, status: { type: 'facts', phrases: ['🎬 Draft due Sunday'] } },
   ],
   30: [
     /* top post ranks by likes + comments, never views (Julia, Jul 27) */

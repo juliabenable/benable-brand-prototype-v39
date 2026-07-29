@@ -1,5 +1,5 @@
 import { useReducer, useState } from 'react';
-import { crewFor, PHOTOS, TIMELINES, CASTING_TIMELINE, STAGE_LABELS, SPOTS } from './pulseData.js';
+import { crewFor, PHOTOS, TIMELINES, CASTING_TIMELINE, STAGE_LABELS, SPOTS, LOCAL } from './pulseData.js';
 import { stageOf, stagesFor, AM_FILTER_LABEL, ActionModal } from './amine.jsx';
 import LiveStatus from './LiveStatus.jsx';
 
@@ -47,7 +47,8 @@ const SPOTS_RULE = `First ${SPOTS} to reply take the spots — extras are saved 
 
 export default function FixedTable({ scene, rows, filter, onFilter, openCrew, toggleCrew, opts = {} }) {
   const { edu = 'b', stage = 'chips', act = 'rows', late = 'quiet', head = 'grey', ship = 'band', btn = 'amber', layout = 'f' } = opts;
-  const split = layout === 'g'; // G · dedicated status column + action column
+  const split = layout === 'g' || layout === 'h'; // G/H · dedicated status + action columns
+  const swapCols = layout === 'h'; // H · action column before status column
   const purpleBtns = btn === 'purple';
   const [, bump] = useReducer((n) => n + 1, 0);
   const crewAll = crewFor(scene.day, scene.mode);
@@ -143,7 +144,9 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
   const renderRow = (c, i, { calm = false } = {}) => {
     const rowKey = `${scene.day}-${c.name}-${i}`;
     const open = openCrew.has(rowKey);
-    const timeline = c.mystery ? CASTING_TIMELINE : TIMELINES[c.name] || [];
+    /* local collabs get visit histories, never product ones (Steph call, Jul 28) */
+    const timeline = c.mystery ? CASTING_TIMELINE
+      : (scene.mode === 'local' && LOCAL.timelines[c.name]) || TIMELINES[c.name] || [];
     const reached = c.mystery ? -1 : stageOf(c, scene.day);
     const foundRow = c.mystery && c.found;
     const live = isLive(c);
@@ -235,10 +238,17 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
 
           {/* §3/§4/§5 · the stage slot: chip or dot, amber pill, or thanks */}
           {split ? (
-            <>
-              <span className="tf-chipslot">{statusCell}</span>
-              <span className="tf-actcell">{actionCell}</span>
-            </>
+            swapCols ? (
+              <>
+                <span className="tf-actcell">{actionCell}</span>
+                <span className="tf-chipslot">{statusCell}</span>
+              </>
+            ) : (
+              <>
+                <span className="tf-chipslot">{statusCell}</span>
+                <span className="tf-actcell">{actionCell}</span>
+              </>
+            )
           ) : amber ? (
             <span className="am-row-cta-slot">
               <button

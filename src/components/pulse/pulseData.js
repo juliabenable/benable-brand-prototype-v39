@@ -243,6 +243,68 @@ export const LOCAL = {
       closer: { text: '2 new videos are ready for a look', cta: 'Watch the first cuts' },
     },
   },
+  /* local stage histories — visits, never products (grounded in the Steph
+     Khalil / Trilogy spas call, Jul 28: creator emails the brand to book,
+     weekday visits only, massage-or-facial pick, practitioner-consent
+     filming, draft lands ~7-10 days after the visit) */
+  timelines: {
+    Maya: [
+      { when: 'Jul 16', detail: 'Matched to your brief — 94% aesthetic fit' },
+      { when: 'Jul 17', detail: 'Accepted in under 5 hours' },
+      { when: 'Jul 21', detail: 'Emailed you — visit set for Tuesday 2pm' },
+      { eta: 'Tuesday', detail: 'Her spa day — she picked the deep-tissue massage' },
+      { eta: 'end of week', detail: 'Draft + disclosure pre-checks' },
+      { eta: 'next week', detail: 'Post goes live · we watch views hourly' },
+    ],
+    Nia: [
+      { when: 'Jul 16', detail: 'Matched — her audience loves self-care' },
+      { when: 'Jul 16', detail: 'Accepted same day 🎉' },
+      { when: 'Jul 19', detail: 'Booked her Thursday-morning visit' },
+      { when: 'Jul 26', detail: 'Visited — filmed the whole facial, practitioner was game' },
+      { when: 'Jul 29', detail: 'Passed quality + disclosure checks' },
+      { when: 'Aug 5', detail: 'Reel live — her best post this month' },
+    ],
+    Sofia: [
+      { when: 'Jul 16', detail: 'Matched via your “clean girl” aesthetic' },
+      { when: 'Jul 18', detail: 'Accepted after a schedule check' },
+      { when: 'Jul 24', detail: 'Emailed you — visit confirmed for Wednesday' },
+      { when: 'Jul 27', detail: 'Visited — slow pans of the quiet treatment rooms' },
+      { when: 'Jul 30', detail: 'Draft approved first pass ✓' },
+      { when: 'Aug 6', detail: 'TikTok live — tags verified' },
+    ],
+    Jade: [
+      { when: 'Jul 16', detail: 'Hand-picked by Katie’s team — “the light in her work”' },
+      { when: 'Jul 17', detail: 'Accepted + shared her moodboard' },
+      { when: 'Jul 23', detail: 'Visit confirmed — Friday, 11am' },
+      { when: 'Jul 25', detail: 'Visited — spa-pool shots at golden hour' },
+      { when: 'Jul 28', detail: '34s reel submitted — checks passed' },
+      { eta: 'after your approval', detail: 'Goes live' },
+    ],
+    Priya: [
+      { when: 'Jul 16', detail: 'Matched — strong voice-over format' },
+      { when: 'Jul 17', detail: 'Accepted, confirmed her angle with Katie’s team' },
+      { when: 'Jul 22', detail: 'Visit booked for Thursday' },
+      { when: 'Jul 24', detail: 'Visited — filmed the relaxation lounge, no guests around' },
+      { when: 'Jul 29', detail: 'Submitted — running pre-checks' },
+      { eta: 'this week', detail: 'Stories go live' },
+    ],
+    Amara: [
+      { when: 'Jul 25', detail: 'Cast as a replacement — 96% fit' },
+      { when: 'Jul 25', detail: 'Accepted in 4 hours' },
+      { when: 'Jul 26', detail: 'Emailed you — visiting Wednesday' },
+      { eta: 'Wednesday', detail: 'Her spa day' },
+      { eta: 'Sunday', detail: 'Draft due' },
+      { eta: 'next week', detail: 'Post goes live' },
+    ],
+    Lena: [
+      { when: 'Jul 16', detail: 'Matched to your brief' },
+      { eta: 'on your approval', detail: 'Invite goes out' },
+      { eta: '—', detail: 'She emails you to book her visit' },
+      { eta: '—', detail: 'Visit day' },
+      { eta: '—', detail: 'Draft + pre-checks' },
+      { eta: '—', detail: 'Post goes live' },
+    ],
+  },
 };
 
 /* crew rows for a day, honoring the collab type */

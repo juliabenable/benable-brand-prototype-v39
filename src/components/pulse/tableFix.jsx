@@ -1,5 +1,5 @@
 import { useReducer, useState } from 'react';
-import { crewFor, PHOTOS, TIMELINES, CASTING_TIMELINE, STAGE_LABELS, SPOTS, LOCAL } from './pulseData.js';
+import { crewFor, PHOTOS, TIMELINES, CASTING_TIMELINE, STAGE_LABELS, SPOTS, LOCAL, NEXT_HINTS } from './pulseData.js';
 import { stageOf, stagesFor, AM_FILTER_LABEL, ActionModal } from './amine.jsx';
 import LiveStatus from './LiveStatus.jsx';
 
@@ -323,7 +323,13 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
                         <span className="cp-hist-label">{c.mystery ? st.label : stages[si].label}</span>
                         <span className="cp-hist-when">{state === 'done' ? (st.when || 'done') : state === 'now' ? 'right now' : 'up next'}</span>
                       </div>
-                      <div className="cp-hist-detail">{st.detail}</div>
+                      {/* future steps only say what's PLANNED — never a past
+                          fact we couldn't know yet (Julia, Jul 28) */}
+                      <div className="cp-hist-detail">
+                        {state === 'next' && !c.mystery
+                          ? (st.next || NEXT_HINTS[scene.mode === 'local' ? 'local' : 'product'][si])
+                          : st.detail}
+                      </div>
                       {state === 'now' && <div className="cp-hist-live"><LiveStatus status={c.status} /></div>}
                     </div>
                   </div>

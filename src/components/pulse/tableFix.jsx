@@ -82,6 +82,10 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
     /* invite days: the spots concept, still behind the status light (Julia, Jul 28) */
     <span className="am-card-sub"><i className="tf-dot" style={{ background: '#2baf87' }} />
       {crewAll.filter((c) => !c.mystery).length} invited · <b className="tf-sub-b">{crewAll.filter((c) => !c.mystery && c.stage > 0).length} of {SPOTS} spots</b>&nbsp;filled
+      {/* the spots rule lives in a light tooltip, not in the chrome (Julia, Jul 28) */}
+      <span className="tf-inf" tabIndex={0} aria-label={SPOTS_RULE}>ⓘ
+        <span className="tf-tip" role="tooltip">{SPOTS_RULE}</span>
+      </span>
     </span>
   ) : (
     <span className="am-card-sub"><i className="tf-dot" style={{ background: '#2baf87' }} />
@@ -484,10 +488,6 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
         </>
       )}
 
-      {/* 2B · the footnote — one quiet line, gone once everyone accepts */}
-      {edu === 'b' && inviting && (
-        <div className="tf-footnote">💡 {SPOTS_RULE}</div>
-      )}
 
       {modal && <ActionModal act={modal} onClose={() => setModal(null)} />}
     </section>

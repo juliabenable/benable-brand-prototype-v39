@@ -145,6 +145,7 @@ export default function CampaignPulse() {
         <button type="button" title="G — dedicated status column + action column" className={tg.table === 'g' ? 'cp-scrub-day cp-scrub-day--active' : 'cp-scrub-day'} onClick={() => setToggle('table', 'g')}>G</button>
         <button type="button" title="H — G with the two columns swapped (action before status)" className={tg.table === 'h' ? 'cp-scrub-day cp-scrub-day--active' : 'cp-scrub-day'} onClick={() => setToggle('table', 'h')}>H</button>
         <button type="button" title="I — no action column; the ghost button replaces the status dot" className={tg.table === 'i' ? 'cp-scrub-day cp-scrub-day--active' : 'cp-scrub-day'} onClick={() => setToggle('table', 'i')}>I</button>
+        <button type="button" title="J — like I, with the button's dot aligned to the status dots" className={tg.table === 'j' ? 'cp-scrub-day cp-scrub-day--active' : 'cp-scrub-day'} onClick={() => setToggle('table', 'j')}>J</button>
       </div>
 
 

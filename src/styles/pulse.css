@@ -390,3 +390,8 @@
 .tf-tip { display: none; position: absolute; left: -14px; top: calc(100% + 9px); width: 300px; background: #fff; border: 1px solid #e3e3e3; border-radius: 10px; padding: 10px 13px; font-size: 12px; font-weight: 400; line-height: 1.5; color: #555; box-shadow: 0 8px 24px rgba(0,0,0,0.10); z-index: 40; white-space: normal; }
 .tf-tip::before { content: ''; position: absolute; top: -5px; left: 16px; width: 9px; height: 9px; background: #fff; border-left: 1px solid #e3e3e3; border-top: 1px solid #e3e3e3; transform: rotate(45deg); }
 .tf-inf:hover .tf-tip, .tf-inf:focus .tf-tip { display: block; }
+
+/* J · the button's dot sits exactly where the status dots sit — the button
+   grows left so its inner dot lands on the column's dot axis */
+.tf-gbtn--flush { margin-left: -14px; }
+.tf-gbtn--nodot { padding-left: 13px; }

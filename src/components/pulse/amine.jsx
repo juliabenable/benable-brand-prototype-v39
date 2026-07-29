@@ -444,10 +444,10 @@ export function ActionModal({ act, onClose }) {
   return createPortal(
     <div className="am-veil" onClick={onClose}>
       <div className="am-modal" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
-        <p className="am-modal-title">{ship ? `Mark ${act.name}’s order as shipped` : `${act.name} emailed you?`}</p>
+        <p className="am-modal-title">{ship ? `Have you shipped ${act.name}’s order?` : `${act.name} emailed you?`}</p>
         <p className="am-modal-sub">
           {ship
-            ? 'Add the tracking number — we’ll watch the delivery and keep everyone posted for you.'
+            ? 'If it’s on its way, add the tracking number — we’ll watch the delivery and keep everyone posted for you.'
             : 'Confirm and set her visit date — we’ll take it from there and check in after the visit.'}
         </p>
         {ship ? (

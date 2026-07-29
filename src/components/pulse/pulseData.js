@@ -58,7 +58,7 @@ export const CREW = {
      carry a Mark-shipped action (ship: true) + the header grows a
      Download-orders CSV button. Product mode only. */
   10: [
-    { name: 'Maya', handle: '@maya.skin', stage: 2, product: 'SPF 50 Tinted', status: { type: 'facts', phrases: ['📦 Shipped Tuesday — in transit'] } },
+    { name: 'Maya', handle: '@maya.skin', stage: 2, product: 'SPF 50 Tinted', status: { type: 'facts', phrases: ['📦 Shipped Tuesday — arriving Thursday'] } },
     { name: 'Nia', handle: '@niaglow', stage: 2, product: 'Mineral Glow SPF 30', status: { type: 'facts', phrases: ['🚚 Out for delivery'] } },
     { name: 'Jade', handle: '@jadebythesea', stage: 2, product: 'SPF 50 Tinted', status: { type: 'facts', phrases: ['📦 In transit — arriving Thursday'] } },
     { name: 'Sofia', handle: '@sofia.films', stage: 1, ship: true, product: 'SPF 50 Tinted', action: { cta: 'Mark shipped' }, status: { type: 'static', phrases: ['Order ready to ship'] } },
@@ -135,7 +135,7 @@ export const TIMELINES = {
   Maya: [
     { when: 'Jul 16', detail: 'Matched to your brief — 94% aesthetic fit' },
     { when: 'Jul 17', detail: 'Accepted in under 5 hours' },
-    { when: 'Jul 21', detail: 'Picked SPF 50 Tinted · arriving Thursday' },
+    { when: 'Jul 21', detail: 'Picked SPF 50 Tinted' },
     { next: 'Scheduled for delivery Thursday', when: 'Jul 24', detail: 'Delivered Jul 24 — shoot confirmed for Saturday' },
     { when: 'Jul 30', detail: 'Draft passed quality + disclosure checks' },
     { when: 'Aug 6', detail: 'Post live — tags verified' },
@@ -143,7 +143,7 @@ export const TIMELINES = {
   Nia: [
     { when: 'Jul 16', detail: 'Matched — her audience loves sun care' },
     { when: 'Jul 16', detail: 'Accepted same day 🎉' },
-    { when: 'Jul 19', detail: 'Picked Mineral Glow SPF 30 · arriving Jul 24' },
+    { when: 'Jul 19', detail: 'Picked Mineral Glow SPF 30' },
     { next: 'Scheduled for delivery Jul 24', when: 'Jul 24', detail: 'Delivered Jul 24 — she teased a BTS story' },
     { when: 'Jul 29', detail: 'Passed quality + disclosure checks' },
     { when: 'Aug 5', detail: 'Reel live — her best post this month' },
@@ -151,7 +151,7 @@ export const TIMELINES = {
   Sofia: [
     { when: 'Jul 16', detail: 'Matched via your “clean girl” aesthetic' },
     { when: 'Jul 18', detail: 'Accepted after a schedule check' },
-    { when: 'Jul 22', detail: 'Picked SPF 50 Tinted · arriving Jul 24 in Austin' },
+    { when: 'Jul 22', detail: 'Picked SPF 50 Tinted · shipped to Austin' },
     { next: 'Scheduled for delivery Jul 24', when: 'Jul 24', detail: 'Delivered Jul 24 — angle confirmed with Katie’s team' },
     { when: 'Jul 30', detail: 'Draft approved first pass ✓' },
     { when: 'Aug 6', detail: 'TikTok live — tags verified' },
@@ -159,7 +159,7 @@ export const TIMELINES = {
   Jade: [
     { when: 'Jul 16', detail: 'Hand-picked by Katie’s team — “the light in her work”' },
     { when: 'Jul 17', detail: 'Accepted + shared her moodboard' },
-    { when: 'Jul 21', detail: 'Picked SPF 50 Tinted · arriving Thursday' },
+    { when: 'Jul 21', detail: 'Picked SPF 50 Tinted' },
     { next: 'Scheduled for delivery Thursday', when: 'Jul 23', detail: 'Delivered Jul 23 — she unboxed on stories' },
     { when: 'Jul 28', detail: '34s reel submitted — checks passed' },
     { next: 'Goes live after final checks', detail: 'Reel live — tags verified' },
@@ -167,7 +167,7 @@ export const TIMELINES = {
   Priya: [
     { when: 'Jul 16', detail: 'Matched — strong before/after format' },
     { when: 'Jul 17', detail: 'Accepted, confirmed her angle with Katie’s team' },
-    { when: 'Jul 22', detail: 'Picked After-Sun Serum · arriving Jul 24' },
+    { when: 'Jul 22', detail: 'Picked After-Sun Serum' },
     { next: 'Scheduled for delivery Jul 24', when: 'Jul 24', detail: 'Delivered Jul 24 — filming window through Sunday' },
     { when: 'Jul 29', detail: 'Submitted — pre-checks passed' },
     { next: 'Stories go live this week', detail: 'Stories live — tags verified' },
@@ -175,7 +175,7 @@ export const TIMELINES = {
   Amara: [
     { when: 'Jul 25', detail: 'Cast as a replacement — 96% fit' },
     { when: 'Jul 25', detail: 'Accepted in 4 hours' },
-    { when: 'Jul 26', detail: 'Express-shipped — arriving tomorrow' },
+    { when: 'Jul 26', detail: 'Express-shipped her product' },
     { next: 'Scheduled for delivery tomorrow', detail: 'Delivered — shoot scheduled this week' },
     { next: 'Draft due Sunday', detail: 'Draft passed checks' },
     { detail: 'Posted — strong debut' },

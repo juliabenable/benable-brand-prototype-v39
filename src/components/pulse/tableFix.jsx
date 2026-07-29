@@ -49,7 +49,8 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
   const { edu = 'b', stage = 'chips', act = 'rows', late = 'quiet', head = 'grey', ship = 'band', btn = 'amber', layout = 'f' } = opts;
   const split = layout === 'g' || layout === 'h'; // G/H · dedicated status + action columns
   const swapCols = layout === 'h'; // H · action column before status column
-  const ghostBtns = layout === 'i'; // I · no action column — the ghost button replaces the status dot
+  const ghostBtns = layout === 'i' || layout === 'j'; // I/J · no action column — the ghost button replaces the status dot
+  const flushDot = layout === 'j'; // J · the button's dot aligns with the status dots around it
   const purpleBtns = btn === 'purple';
   const [, bump] = useReducer((n) => n + 1, 0);
   const crewAll = crewFor(scene.day, scene.mode);
@@ -161,7 +162,7 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
         : null;
     /* honest buttons age better: the ship modal asks for tracking (amber mode);
        the purple set mirrors Julia's mock verbatim, incl. "Mark shipped" */
-    const cta = foundRow ? 'Review matches' : c.ship ? (purpleBtns ? 'Mark shipped' : 'Add tracking') : c.confirmEmail ? 'Confirm visit' : c.action?.cta;
+    const cta = foundRow ? 'Review matches' : c.ship ? (purpleBtns ? 'Mark shipped' : 'Ship and add tracking') : c.confirmEmail ? 'Confirm visit' : c.action?.cta;
     const actBtnClass = purpleBtns
       ? `tf-pbtn${foundRow ? ' tf-pbtn--primary' : ''}`
       : 'tf-abtn';
@@ -255,7 +256,7 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
             <span className="am-row-cta-slot">
               <button
                 type="button"
-                className={`${ghostBtns ? 'tf-gbtn' : actBtnClass}${shipDay && c.ship && !sheetDone ? ' tf-abtn--waiting' : ''}`}
+                className={`${ghostBtns ? 'tf-gbtn' : actBtnClass}${flushDot ? ' tf-gbtn--flush' : ''}${shipDay && c.ship && !sheetDone ? ' tf-abtn--waiting' : ''}`}
                 onClick={(e) => { e.stopPropagation(); if (actModal) setModal(actModal); }}
               >
                 {ghostBtns && <i className="tf-btndot" aria-hidden />}{cta}
@@ -267,7 +268,7 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
               {purpleBtns ? (
                 <button type="button" className="tf-pbtn tf-pbtn--love" onClick={(e) => e.stopPropagation()}><i aria-hidden>♡</i> Say thanks</button>
               ) : ghostBtns ? (
-                <button type="button" className="tf-gbtn" onClick={(e) => e.stopPropagation()}>Say thanks</button>
+                <button type="button" className={`tf-gbtn${flushDot ? ' tf-gbtn--flush tf-gbtn--nodot' : ''}`} onClick={(e) => e.stopPropagation()}>Say thanks</button>
               ) : (
                 <button type="button" className="tf-abtn" onClick={(e) => e.stopPropagation()}>Say thanks</button>
               )}

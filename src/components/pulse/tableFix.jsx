@@ -75,11 +75,15 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
     <span className="am-card-sub">{rows.length} of {cohort} · {AM_FILTER_LABEL(filter, scene.mode)}</span>
   ) : needs > 0 ? (
     <span className="am-card-sub tf-sub--amber"><i className="tf-dot" style={{ background: '#f0a32e' }} />{needs} waiting on you</span>
+  ) : inviting ? (
+    /* invite days: the spots concept, still behind the status light (Julia, Jul 28) */
+    <span className="am-card-sub"><i className="tf-dot" style={{ background: '#2baf87' }} />
+      {crewAll.filter((c) => !c.mystery).length} invited · <b className="tf-sub-b">{crewAll.filter((c) => !c.mystery && c.stage > 0).length} of {SPOTS} spots</b>&nbsp;filled
+    </span>
   ) : (
     <span className="am-card-sub"><i className="tf-dot" style={{ background: '#2baf87' }} />
       {wrapped ? 'Nothing left to do — campaign wrapped'
         : liveAll.length ? `Nothing needs you — ${liveAll.length} live this week`
-        : inviting ? 'Nothing needs you — invites are out'
         : 'Nothing needs you — everyone’s moving'}
     </span>
   );

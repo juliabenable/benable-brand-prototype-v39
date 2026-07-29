@@ -25,6 +25,19 @@ const F_OPTS = { edu: 'b', stage: 'dots', act: 'calm', late: 'quiet', icons: 'of
 // table layout (F = status/button share one slot · G = dedicated columns)
 let persistedToggles = { head: 'grey', ship: 'band', table: 'g', ring: 'solid' };
 
+/* Demo deep-links (states-review gallery): ?day=9&mode=local&table=k&head=white
+   &ship=head&ring=badge seed the demo state; ?embed=1 hides the demo chrome.
+   No params → behavior unchanged. */
+const Q = new URLSearchParams(window.location.search);
+const EMBED = Q.has('embed');
+if (Q.get('mode') === 'local') persistedMode = 'local';
+for (const k of ['table', 'head', 'ship', 'ring']) if (Q.has(k)) persistedToggles = { ...persistedToggles, [k]: Q.get(k) };
+if (Q.has('day')) {
+  const qDays = persistedMode === 'local' ? DAYS.filter((d) => !d.productOnly) : DAYS;
+  const qi = qDays.findIndex((d) => d.day === Number(Q.get('day')));
+  if (qi >= 0) persistedIdx = qi;
+}
+
 export default function CampaignPulse() {
   const [idx, setIdx] = useState(persistedIdx);
   const [mode, setMode] = useState(persistedMode);
@@ -123,7 +136,7 @@ export default function CampaignPulse() {
   return (
     <div className="cp-root cp-root--c" ref={rootRef}>
       {/* demo control — collab type, at the very top (Julia, Jul 27) */}
-      <div className="cp-mode" role="group" aria-label="Collab type">
+      {!EMBED && <div className="cp-mode" role="group" aria-label="Collab type">
         <span className="cp-scrub-tag">COLLAB TYPE</span>
         <button type="button" className={mode === 'product' ? 'cp-scrub-day cp-scrub-day--active' : 'cp-scrub-day'} onClick={() => switchMode('product')}>
           Product
@@ -154,8 +167,7 @@ export default function CampaignPulse() {
             {v[0].toUpperCase() + v.slice(1)}
           </button>
         ))}
-      </div>
-
+      </div>}
 
       {phase === 'sourcing' ? (
         <StayTuned />
@@ -187,7 +199,7 @@ export default function CampaignPulse() {
       )}
 
       {/* demo scrubber — presenter control, not product UI */}
-      <nav className="cp-scrubber" aria-label="Demo controls">
+      {!EMBED && <nav className="cp-scrubber" aria-label="Demo controls">
         <span className="cp-scrub-tag">PULSE DEMO</span>
         <button type="button" className="cp-scrub-arrow" disabled={idx === 0} onClick={() => setIdx(idx - 1)}>←</button>
         {days.map((d, i) => (
@@ -196,7 +208,7 @@ export default function CampaignPulse() {
           </button>
         ))}
         <button type="button" className="cp-scrub-arrow" disabled={idx === days.length - 1} onClick={() => setIdx(idx + 1)}>→</button>
-      </nav>
+      </nav>}
     </div>
   );
 }

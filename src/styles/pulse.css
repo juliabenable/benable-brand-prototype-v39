@@ -380,3 +380,8 @@
 /* stage-history live link — subtle underline, only once the post exists */
 .tf-histlink { display: inline-flex; align-items: center; gap: 3px; margin-top: 4px; font-size: 12px; font-weight: 500; color: #555; text-decoration: underline; text-underline-offset: 2px; }
 .tf-histlink:hover { color: #1c1c1c; }
+/* row drawer — smooth height transition both ways, no layout snap */
+.tf-drawer { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.32s cubic-bezier(0.22, 1, 0.36, 1); }
+.tf-drawer--open { grid-template-rows: 1fr; }
+.tf-drawer-in { overflow: hidden; min-height: 0; }
+.tf-drawer:not(.tf-drawer--open) .am-hist { border-top-color: transparent; }

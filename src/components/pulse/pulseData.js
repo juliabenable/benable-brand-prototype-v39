@@ -118,6 +118,7 @@ export const NEXT_HINTS = {
     'Delivery — we watch the tracking',
     'Draft + disclosure pre-checks',
     'Post goes live · we watch the first hours',
+    'Your thank-you — right after she posts',
   ],
   local: [
     'Invite goes out on your approval',
@@ -126,6 +127,7 @@ export const NEXT_HINTS = {
     'Visit day — weekdays only',
     'Draft + disclosure pre-checks',
     'Post goes live · we watch the first hours',
+    'Your thank-you — right after she posts',
   ],
 };
 

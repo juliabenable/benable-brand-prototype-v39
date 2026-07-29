@@ -49,6 +49,7 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
   const { edu = 'b', stage = 'chips', act = 'rows', late = 'quiet', head = 'grey', ship = 'band', btn = 'amber', layout = 'f' } = opts;
   const split = layout === 'g' || layout === 'h'; // G/H · dedicated status + action columns
   const swapCols = layout === 'h'; // H · action column before status column
+  const ghostBtns = layout === 'i'; // I · no action column — the ghost button replaces the status dot
   const purpleBtns = btn === 'purple';
   const [, bump] = useReducer((n) => n + 1, 0);
   const crewAll = crewFor(scene.day, scene.mode);
@@ -109,17 +110,13 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
      (Julia, Jul 28) */
   const shipVisible = shipDay && rows.some((c) => c.ship);
   const shipInHead = shipVisible && ship === 'head';
-  const stepsSeq = sheetDone ? (
+  /* the three steps NEVER change shape — downloading just ticks step ① and
+     hands the "now" weight to step ② (Julia, Jul 28) */
+  const stepsSeq = (
     <>
-      <span className="tf-step tf-step--done"><i className="tf-sn">✓</i>Order sheet downloaded</span>
+      <span className={`tf-step ${sheetDone ? 'tf-step--done' : 'tf-step--now'}`}><i className="tf-sn">{sheetDone ? '✓' : '1'}</i>Download the order sheet</span>
       <span className="tf-arrow" aria-hidden>→</span>
-      <span className="tf-step tf-step--now"><i className="tf-sn">2</i>Ship, then add tracking per creator</span>
-    </>
-  ) : (
-    <>
-      <span className="tf-step tf-step--now"><i className="tf-sn">1</i>Download the order sheet</span>
-      <span className="tf-arrow" aria-hidden>→</span>
-      <span className="tf-step"><i className="tf-sn">2</i>Ship the packages</span>
+      <span className={`tf-step${sheetDone ? ' tf-step--now' : ''}`}><i className="tf-sn">2</i>Ship the packages</span>
       <span className="tf-arrow" aria-hidden>→</span>
       <span className="tf-step"><i className="tf-sn">3</i>Add tracking below</span>
     </>
@@ -254,10 +251,10 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
             <span className="am-row-cta-slot">
               <button
                 type="button"
-                className={`${actBtnClass}${shipDay && c.ship && !sheetDone ? ' tf-abtn--waiting' : ''}`}
+                className={`${ghostBtns ? 'tf-gbtn' : actBtnClass}${shipDay && c.ship && !sheetDone ? ' tf-abtn--waiting' : ''}`}
                 onClick={(e) => { e.stopPropagation(); if (actModal) setModal(actModal); }}
               >
-                {cta}
+                {ghostBtns && <i className="tf-btndot" aria-hidden />}{cta}
               </button>
             </span>
           ) : live ? (
@@ -265,6 +262,8 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
             <span className="am-row-cta-slot">
               {purpleBtns ? (
                 <button type="button" className="tf-pbtn tf-pbtn--love" onClick={(e) => e.stopPropagation()}><i aria-hidden>♡</i> Say thanks</button>
+              ) : ghostBtns ? (
+                <button type="button" className="tf-gbtn" onClick={(e) => e.stopPropagation()}>Say thanks</button>
               ) : (
                 <button type="button" className="tf-abtn" onClick={(e) => e.stopPropagation()}>Say thanks</button>
               )}
@@ -307,14 +306,19 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
             )}
           </span>
         </div>
-        {open && (
+        {/* drawer stays mounted; a grid-rows transition animates open AND
+            close so nothing snaps or shifts (Julia, Jul 28) */}
+        <div className={`tf-drawer${open ? ' tf-drawer--open' : ''}`} aria-hidden={!open} inert={open ? undefined : ''}>
+          <div className="tf-drawer-in">
           <div className="am-hist">
             <p className="am-hist-title">Stage history</p>
             <div className="cp-crew-history am-hist-body">
-              {timeline.map((st, si) => {
+              {/* the drawer mirrors the tracker's 7 stages — Thanked included */}
+              {(c.mystery ? timeline : [...timeline, { detail: 'Thank-you sent 💌' }]).map((st, si) => {
                 const state = c.mystery
                   ? (st.live ? 'now' : st.when ? 'done' : 'next')
-                  : si < c.stage ? 'done' : si === c.stage ? 'now' : 'next';
+                  : wrapped ? 'done'
+                  : si < reached ? 'done' : si === reached ? 'now' : 'next';
                 return (
                   <div key={si} className={`cp-hist-step cp-hist-step--${state}`} style={{ animationDelay: `${0.05 * si}s` }}>
                     <span className="cp-hist-dot">{state === 'done' ? '✓' : ''}</span>
@@ -322,7 +326,7 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
                       <div className="cp-hist-top">
                         {/* history speaks the tracker's stage names — except the
                             finale, which gets its exclamation (Julia, Jul 28) */}
-                        <span className="cp-hist-label">{c.mystery ? st.label : si === 5 ? 'Live!' : stages[si].label}</span>
+                        <span className="cp-hist-label">{c.mystery ? st.label : si === 6 ? 'Thanked' : si === 5 ? 'Live!' : stages[si].label}</span>
                         <span className="cp-hist-when">{state === 'done' ? (st.when || 'done') : state === 'now' ? 'right now' : 'up next'}</span>
                       </div>
                       {/* future steps only say what's PLANNED — never a past
@@ -345,7 +349,8 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
               })}
             </div>
           </div>
-        )}
+          </div>
+        </div>
       </div>
     );
   };

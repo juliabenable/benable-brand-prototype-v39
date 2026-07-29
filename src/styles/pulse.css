@@ -40,7 +40,7 @@
 .cp-hist-dot { flex: none; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font-size: 10px; font-weight: 700; z-index: 1; }
 .cp-hist-step--done .cp-hist-dot { background: #e9f6ee; color: #2e9e6b; }
 /* now-dot: whisper halo, no ping ring (Julia, Jul 28 — much more subtle) */
-.cp-hist-step--now .cp-hist-dot { background: #17864f; box-shadow: 0 0 0 2.5px #e9f2ed; position: relative; }
+.cp-hist-step--now .cp-hist-dot { background: #2e9e6b; box-shadow: 0 0 0 2.5px #e9f2ed; position: relative; }
 .cp-hist-step--next .cp-hist-dot { background: #fff; border: 2px dashed #ddd; }
 .cp-hist-body { flex: 1; min-width: 0; padding-top: 1px; }
 .cp-hist-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; max-width: 460px; }

@@ -46,7 +46,8 @@ let coachDismissed = false;
 const SPOTS_RULE = `First ${SPOTS} to reply take the spots — extras are saved for your next campaign.`;
 
 export default function FixedTable({ scene, rows, filter, onFilter, openCrew, toggleCrew, opts = {} }) {
-  const { edu = 'b', stage = 'chips', act = 'rows', late = 'quiet', head = 'grey', ship = 'band', btn = 'amber' } = opts;
+  const { edu = 'b', stage = 'chips', act = 'rows', late = 'quiet', head = 'grey', ship = 'band', btn = 'amber', layout = 'f' } = opts;
+  const split = layout === 'g'; // G · dedicated status column + action column
   const purpleBtns = btn === 'purple';
   const [, bump] = useReducer((n) => n + 1, 0);
   const crewAll = crewFor(scene.day, scene.mode);
@@ -102,7 +103,11 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
   };
 
   /* the ship flow's pieces, shared by the band and the in-header placement */
-  const shipInHead = shipDay && ship === 'head';
+  /* the ship flow only surfaces when the visible rows actually hold the
+     orders — "See all" or the needs/Accepted focus, never e.g. Sourcing
+     (Julia, Jul 28) */
+  const shipVisible = shipDay && rows.some((c) => c.ship);
+  const shipInHead = shipVisible && ship === 'head';
   const stepsSeq = sheetDone ? (
     <>
       <span className="tf-step tf-step--done"><i className="tf-sn">✓</i>Order sheet downloaded</span>
@@ -157,7 +162,44 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
       ? `tf-pbtn${foundRow ? ' tf-pbtn--primary' : ''}`
       : 'tf-abtn';
     /* live rows stay calm too — no warm wash (Julia, Jul 28) */
-    const rowClass = `am-row tf-row${amber && !calm ? ' tf-needs' : ''}${wrapped ? ' tf-done tf-wraprow' : ''}`;
+    const rowClass = `am-row tf-row${split ? ' tf-row--split' : ''}${amber && !calm ? ' tf-needs' : ''}${wrapped ? ' tf-done tf-wraprow' : ''}`;
+
+    /* G · status cell: always the ramp dot + stage word; the dot flips amber
+       when the row waits on the brand (Julia's mock) */
+    const statusCell = c.mystery && !foundRow ? (
+      <span className="tf-gdot"><i style={{ background: '#d5d8d5' }} />Sourcing…</span>
+    ) : foundRow ? (
+      <span className="tf-gdot"><i style={{ background: '#f0a32e' }} />Match found</span>
+    ) : (
+      <span className="tf-statcell">
+        <button
+          type="button"
+          className="tf-gdot tf-gdot--btn"
+          title={`Show everyone in ${wrapped ? 'Thanked' : stages[reached].label}`}
+          onClick={(e) => { e.stopPropagation(); onFilter(filter === reached ? null : reached); }}
+        >
+          <i style={{ background: amber ? '#f0a32e' : CHIP_FILLS[reached].bg }} />{wrapped ? 'Thanked' : stages[reached].label}
+        </button>
+        {wrapped && <span className="tf-stamp">💌 Sent</span>}
+      </span>
+    );
+
+    /* G · action cell: the button lives here (ghost, per the mock) or a quiet — */
+    const actionCell = amber ? (
+      <button
+        type="button"
+        className={`tf-gbtn${shipDay && c.ship && !sheetDone ? ' tf-abtn--waiting' : ''}`}
+        onClick={(e) => { e.stopPropagation(); if (actModal) setModal(actModal); }}
+      >
+        {cta}
+      </button>
+    ) : live ? (
+      <button type="button" className="tf-gbtn" onClick={(e) => e.stopPropagation()}>Say thanks</button>
+    ) : wrapped && !c.mystery ? (
+      <span className="tf-seepost">See her post ↗</span>
+    ) : (
+      <span className="tf-noact" aria-hidden>—</span>
+    );
 
     return (
       <div key={rowKey} className="am-item">
@@ -192,7 +234,12 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
           </span>
 
           {/* §3/§4/§5 · the stage slot: chip or dot, amber pill, or thanks */}
-          {amber ? (
+          {split ? (
+            <>
+              <span className="tf-chipslot">{statusCell}</span>
+              <span className="tf-actcell">{actionCell}</span>
+            </>
+          ) : amber ? (
             <span className="am-row-cta-slot">
               <button
                 type="button"
@@ -242,7 +289,7 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
           )}
 
           <span className="am-chev">
-            {wrapped && !c.mystery ? (
+            {wrapped && !c.mystery && !split ? (
               <span className="tf-seepost">See her post ↗</span>
             ) : (
               !foundRow && <img src={ICO.chevron} alt="" style={{ rotate: open ? '270deg' : '90deg' }} />
@@ -262,7 +309,8 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
                     <span className="cp-hist-dot">{state === 'done' ? '✓' : ''}</span>
                     <div className="cp-hist-body">
                       <div className="cp-hist-top">
-                        <span className="cp-hist-label">{c.mystery ? st.label : STAGE_LABELS[si]}</span>
+                        {/* history speaks the tracker's stage names (Julia, Jul 28) */}
+                        <span className="cp-hist-label">{c.mystery ? st.label : stages[si].label}</span>
                         <span className="cp-hist-when">{state === 'done' ? (st.when || 'done') : state === 'now' ? 'right now' : 'up next'}</span>
                       </div>
                       <div className="cp-hist-detail">{st.detail}</div>
@@ -317,7 +365,7 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
       </div>
 
       {/* §6 · the shipping flow reads as a flow — download is step one */}
-      {shipDay && !shipInHead && (
+      {shipVisible && !shipInHead && (
         <div className="tf-steps">
           <div className="tf-steps-l">{stepsSeq}</div>
           {dlBtn('Download order sheet')}

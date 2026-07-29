@@ -21,8 +21,9 @@ let persistedMode = 'product';
    Undecided dims ship at their F defaults: edu footnote (B) · late quiet (7A) ·
    header grey #f8f9fa · ship band · amber buttons. Flip here if she re-opens one. */
 const F_OPTS = { edu: 'b', stage: 'dots', act: 'calm', late: 'quiet', icons: 'off', btn: 'amber' };
-// the two dims Julia kept open (Jul 28): header tint + ship-flow placement
-let persistedToggles = { head: 'grey', ship: 'band' };
+// the dims Julia kept open (Jul 28): header tint + ship-flow placement +
+// table layout (F = status/button share one slot · G = dedicated columns)
+let persistedToggles = { head: 'grey', ship: 'band', table: 'g' };
 
 export default function CampaignPulse() {
   const [idx, setIdx] = useState(persistedIdx);
@@ -138,6 +139,10 @@ export default function CampaignPulse() {
         <span className="cp-scrub-tag">SHIP</span>
         <button type="button" title="Steps band under the header" className={tg.ship === 'band' ? 'cp-scrub-day cp-scrub-day--active' : 'cp-scrub-day'} onClick={() => setToggle('ship', 'band')}>Band</button>
         <button type="button" title="Steps + download inside the header" className={tg.ship === 'head' ? 'cp-scrub-day cp-scrub-day--active' : 'cp-scrub-day'} onClick={() => setToggle('ship', 'head')}>Header</button>
+        <span className="cp-mode-sep" aria-hidden />
+        <span className="cp-scrub-tag">TABLE</span>
+        <button type="button" title="F — status and button share one slot" className={tg.table === 'f' ? 'cp-scrub-day cp-scrub-day--active' : 'cp-scrub-day'} onClick={() => setToggle('table', 'f')}>F</button>
+        <button type="button" title="G — dedicated status column + action column" className={tg.table === 'g' ? 'cp-scrub-day cp-scrub-day--active' : 'cp-scrub-day'} onClick={() => setToggle('table', 'g')}>G</button>
       </div>
 
 
@@ -158,7 +163,7 @@ export default function CampaignPulse() {
                   onFilter={setStageFilter}
                   openCrew={openCrew}
                   toggleCrew={toggleCrew}
-                  opts={{ ...F_OPTS, ...tg }}
+                  opts={{ ...F_OPTS, ...tg, layout: tg.table }}
                 />
               </div>
 

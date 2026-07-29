@@ -39,16 +39,16 @@
 .cp-hist-step:not(:last-child)::before { content: ''; position: absolute; left: 9px; top: 22px; bottom: 0; width: 2px; background: #f0f0f0; }
 .cp-hist-dot { flex: none; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font-size: 10px; font-weight: 700; z-index: 1; }
 .cp-hist-step--done .cp-hist-dot { background: #e9f6ee; color: #2e9e6b; }
-.cp-hist-step--now .cp-hist-dot { background: #7a5cfa; box-shadow: 0 0 0 4px #ebe4ff; position: relative; }
-.cp-hist-step--now .cp-hist-dot::after { content: ''; position: absolute; inset: -7px; border-radius: 50%; border: 2px solid #7a5cfa; opacity: 0; animation: cp-ping 2.2s ease-out infinite; }
+/* now-dot: whisper halo, no ping ring (Julia, Jul 28 — much more subtle) */
+.cp-hist-step--now .cp-hist-dot { background: #17864f; box-shadow: 0 0 0 2.5px #e9f2ed; position: relative; }
 .cp-hist-step--next .cp-hist-dot { background: #fff; border: 2px dashed #ddd; }
 .cp-hist-body { flex: 1; min-width: 0; padding-top: 1px; }
 .cp-hist-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; max-width: 460px; }
 .cp-hist-label { font-size: 12.5px; font-weight: 600; color: #1a1a1a; }
 .cp-hist-step--next .cp-hist-label { color: #9a9a9a; font-weight: 500; }
-.cp-hist-step--now .cp-hist-label { color: #5e41d6; }
+.cp-hist-step--now .cp-hist-label { color: #17864f; }
 .cp-hist-when { font-size: 11.5px; color: #9a9a9a; white-space: nowrap; }
-.cp-hist-step--now .cp-hist-when { color: #7a5cfa; font-weight: 600; }
+.cp-hist-step--now .cp-hist-when { color: #17864f; font-weight: 600; }
 .cp-hist-detail { font-size: 12.5px; color: #717171; margin-top: 1px; max-width: 460px; }
 .cp-hist-step--next .cp-hist-detail { color: #b3b3b3; }
 .cp-hist-live { margin-top: 6px; }
@@ -292,6 +292,13 @@
 .tf-dot { display: inline-block; width: 7px; height: 7px; border-radius: 999px; margin-right: 6px; vertical-align: 1px; }
 .tf-sub--amber { color: #b57506 !important; font-weight: 600; }
 .tf-sub-b { color: #1c1c1c; font-weight: 600; }
+/* G · dedicated status + action columns (Julia's mock, Jul 28) */
+.tf-table .tf-row--split { grid-template-columns: 218px minmax(0, 1fr) 150px 136px 28px; }
+.tf-statcell { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
+.tf-actcell { display: flex; align-items: center; min-width: 0; }
+.tf-gbtn { display: inline-flex; align-items: center; height: 30px; padding: 0 13px; border-radius: 999px; border: 1px solid #e3e3e3; background: #fff; font-family: inherit; font-size: 12px; font-weight: 600; color: #1c1c1c; cursor: pointer; white-space: nowrap; transition: border-color 0.15s; }
+.tf-gbtn:hover { border-color: #c9c9c9; }
+.tf-noact { color: #c9c9c9; font-weight: 600; }
 .tf-info { position: relative; display: inline-flex; align-items: center; gap: 5px; height: 26px; padding: 0 11px; border-radius: 999px; border: 1px solid #e3e3e3; background: #fff; font-size: 12px; color: #717171; cursor: default; white-space: nowrap; }
 .tf-info b { color: #444; font-weight: 600; }
 .tf-info-i { color: #9a9a9e; font-weight: 600; }

@@ -172,7 +172,7 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
     const statusCell = c.mystery && !foundRow ? (
       <span className="tf-gdot"><i style={{ background: '#d5d8d5' }} />Sourcing…</span>
     ) : foundRow ? (
-      <span className="tf-gdot"><i style={{ background: '#f0a32e' }} />Match found</span>
+      <span className="tf-gdot"><i style={{ background: '#d5d8d5' }} />Match found</span>
     ) : (
       <span className="tf-statcell">
         <button
@@ -181,7 +181,8 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
           title={`Show everyone in ${wrapped ? 'Thanked' : stages[reached].label}`}
           onClick={(e) => { e.stopPropagation(); onFilter(filter === reached ? null : reached); }}
         >
-          <i style={{ background: amber ? '#f0a32e' : CHIP_FILLS[reached].bg }} />{wrapped ? 'Thanked' : stages[reached].label}
+          {/* the amber signal moved into the action button (Julia, Jul 28) */}
+          <i style={{ background: CHIP_FILLS[reached].bg }} />{wrapped ? 'Thanked' : stages[reached].label}
         </button>
         {wrapped && <span className="tf-stamp">💌 Sent</span>}
       </span>
@@ -194,7 +195,7 @@ export default function FixedTable({ scene, rows, filter, onFilter, openCrew, to
         className={`tf-gbtn${shipDay && c.ship && !sheetDone ? ' tf-abtn--waiting' : ''}`}
         onClick={(e) => { e.stopPropagation(); if (actModal) setModal(actModal); }}
       >
-        {cta}
+        <i className="tf-btndot" aria-hidden />{cta}
       </button>
     ) : live ? (
       <button type="button" className="tf-gbtn" onClick={(e) => e.stopPropagation()}>Say thanks</button>
